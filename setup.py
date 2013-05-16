@@ -17,7 +17,7 @@ from distutils.core import setup, Extension
 
 classifiers = ["License :: OSI Approved :: Apache Software License",
                "Programming Language :: Python :: 2",
-               "Topic :: Software Development :: Libraries :: Build Tools"]
+               "Topic :: Software Development :: Build Tools"]
 
 setup(name="osbuild",
       packages=["osbuild", "osbuild.plugins"],
