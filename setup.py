@@ -20,11 +20,12 @@ classifiers = ["License :: OSI Approved :: Apache Software License",
                "Topic :: Software Development :: Build Tools"]
 
 setup(name="osbuild",
-      packages=["osbuild", "osbuild.plugins"],
+      packages=["osbuild", "osbuild.plugins", "osbuild"],
       version="0.1",
       description="Pull, build and test multiple source modules",
       author="Daniel Narvaez",
       author_email="dwnarvaez@gmail.com",
       url="http://github.com/dnarvaez/osbuild",
       classifiers=classifiers,
+      test_suite="osbuild.tests",
       ext_modules=[Extension("osbuild.sourcestamp", ["src/sourcestamp.c"])])
