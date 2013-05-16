@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 classifiers = ["License :: OSI Approved :: Apache Software License",
                "Programming Language :: Python :: 2",
