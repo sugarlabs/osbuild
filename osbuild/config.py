@@ -32,6 +32,8 @@ system_lib_dirs = None
 home_dir = None
 build_state_dir = None
 log_path = None
+git_user_name = None
+git_email = None
 
 _source_dir = None
 _prefs_path = None
@@ -96,6 +98,12 @@ def setup(**kwargs):
     global log_path
     if "log_name" in kwargs:
         log_path = _create_log(kwargs["log_name"])
+
+    if "git_user_name" in kwargs:
+        git_user_name = kwargs["git_user_name"]
+
+    if "git_email" in kwargs:
+        git_email = kwargs["git_email"]
 
 
 def get_source_dir():
