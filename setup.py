@@ -13,11 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import subprocess
 from setuptools import setup, Extension
+from distutils.cmd import Command
 
 classifiers = ["License :: OSI Approved :: Apache Software License",
                "Programming Language :: Python :: 2",
                "Topic :: Software Development :: Build Tools"]
+
+
+class LintCommand(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        subprocess.check_call(["pep8", "."])
+        subprocess.check_call(["pyflakes", "."])
+
 
 setup(name="osbuild",
       packages=["osbuild", "osbuild.plugins", "osbuild"],
@@ -28,4 +45,5 @@ setup(name="osbuild",
       url="http://github.com/dnarvaez/osbuild",
       classifiers=classifiers,
       test_suite="osbuild.tests",
+      cmdclass={"lint": LintCommand},
       ext_modules=[Extension("osbuild.sourcestamp", ["src/sourcestamp.c"])])

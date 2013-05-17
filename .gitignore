@@ -1,0 +1,4 @@
+/build/
+/osbuild.egg-info/
+*.so
+*.pyc
