@@ -48,6 +48,7 @@ class Module:
         self.options_evaluated = info.get("options_evaluated", [])
         self.has_checks = info.get("has_checks", False)
         self.no_libdir = info.get("no_libdir", False)
+        self.makefile_name = info.get("makefile_name", "Makefile")
 
     def get_source_dir(self):
         return os.path.join(get_source_dir(), self.name)

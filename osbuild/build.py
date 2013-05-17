@@ -142,7 +142,7 @@ def _build_autotools(module, log):
     aclocal_path = os.path.join(config.share_dir, "aclocal")
     utils.ensure_dir(aclocal_path)
 
-    makefile_path = os.path.join(module.get_source_dir(), "Makefile")
+    makefile_path = os.path.join(module.get_source_dir(), module.makefile_name)
 
     if not os.path.exists(makefile_path):
         configure = os.path.join(module.get_source_dir(), "autogen.sh")
