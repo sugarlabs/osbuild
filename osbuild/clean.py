@@ -16,12 +16,14 @@
 from osbuild import build
 from osbuild import logs
 from osbuild import state
+from osbuild import docs
 
 
 def clean(build_only=False):
     print("\n= Clean =\n")
 
     build.clean()
+    docs.clean()
     state.clean(build_only=build_only)
 
     if not build_only:

@@ -14,13 +14,16 @@
 # limitations under the License.
 
 import os
+import shutil
 
 from osbuild import config
 from osbuild import command
 
 
 def build():
-    print("= Building docs =\n")
+    print("\n= Building docs =\n")
+
+    clean()
 
     for module in config.load_modules():
         if module.has_docs:
@@ -30,3 +33,9 @@ def build():
             command.run(["docker", "-I", "-c", "friendly", "-o", output_dir])
 
     return False
+
+def clean():
+    try:
+        shutil.rmtree(os.path.join(config.docs_dir))
+    except OSError:
+        pass
