@@ -45,9 +45,12 @@ def check():
 
 
 def _check_module(module):
-    if module.has_checks:
+    build_system = module.get_build_system()
+
+    if build_system and module.has_checks:
         print("* Checking %s" % module.name)
-        return _checkers[module.get_build_system()](module)
+        return _checkers[build_system](module)
+
     return True
 
 

@@ -205,10 +205,8 @@ def _build_module(module, log=None):
 
     try:
         build_system = module.get_build_system()
-        if build_system is None:
-            return False
-
-        _builders[build_system](module, log)
+        if build_system:
+            _builders[build_system](module, log)
     except subprocess.CalledProcessError:
         return False
 

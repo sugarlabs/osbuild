@@ -76,10 +76,7 @@ class Module:
               os.path.exists(os.path.join(source_dir, "configure"))):
             return "autotools"
         else:
-            print("The source directory has unexpected content, please "
-                  "delete it and pull\nthe source again.")
             return None
-
 
 def setup(**kwargs):
     global config_dir
