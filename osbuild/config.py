@@ -103,9 +103,11 @@ def setup(**kwargs):
         log_path = _create_log(kwargs["log_name"])
 
     if "git_user_name" in kwargs:
+        global git_user_name
         git_user_name = kwargs["git_user_name"]
 
     if "git_email" in kwargs:
+        global git_email
         git_email = kwargs["git_email"]
 
 
