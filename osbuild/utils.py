@@ -20,6 +20,6 @@ devnull = open("/dev/null", "w")
 
 def ensure_dir(path):
     try:
-        os.mkdir(path)
+        os.makedirs(path)
     except OSError:
         pass
