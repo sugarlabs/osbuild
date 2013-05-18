@@ -1,4 +1,5 @@
 /build/
 /osbuild.egg-info/
+/dist/
 *.so
 *.pyc

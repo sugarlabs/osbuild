@@ -20,6 +20,7 @@ from osbuild import distro
 from osbuild import utils
 
 config_dir = None
+docs_dir = None
 logs_dir = None
 install_dir = None
 lib_dir = None
@@ -51,6 +52,8 @@ class Module:
         self.has_checks = info.get("has_checks", False)
         self.no_libdir = info.get("no_libdir", False)
         self.makefile_name = info.get("makefile_name", "Makefile")
+        self.has_docs = info.get("has_docs", False)
+        self.docs_dir = info.get("docs_dir", self.name)
 
     def get_source_dir(self):
         return os.path.join(get_source_dir(), self.name)
@@ -81,6 +84,9 @@ class Module:
 def setup(**kwargs):
     global config_dir
     config_dir = kwargs.get("config_dir", None)
+
+    global docs_dir
+    docs_dir = kwargs["docs_dir"]
 
     global logs_dir
     logs_dir = kwargs["logs_dir"]
