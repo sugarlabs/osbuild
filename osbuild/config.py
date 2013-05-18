@@ -131,7 +131,6 @@ def set_pref(name, value):
 
 
 def get_full_build():
-    config = None
     with open(os.path.join(config_dir, "config.json")) as f:
         config = json.load(f)
 
@@ -139,34 +138,23 @@ def get_full_build():
 
 
 def load_packages():
-    packages = {}
-
-    for path in _read_index("packages"):
-        packages.update(json.load(open(path)))
-
-    return packages
+    with open(os.path.join(config_dir, "packages.json")) as f:
+        return json.load(f)
 
 
 def load_prerequisites():
-    path = os.path.join(config_dir, "deps", "prerequisites.json")
-    return json.load(open(path))
+    with open(os.path.join(config_dir, "prerequisites.json")) as f:
+        return json.load(f)
 
 
 def load_checks():
-    checks = []
-    for path in _read_index("deps"):
-        checks.extend(json.load(open(path)))
-
-    return filter(_filter_if, checks)
+    with open(os.path.join(config_dir, "dependencies.json")) as f:
+        return filter(_filter_if, json.load(f))
 
 
 def load_modules():
-    modules = []
-    for path in _read_index("modules"):
-        for info in json.load(open(path)):
-            modules.append(info)
-
-    return [Module(info) for info in filter(_filter_if, modules)]
+    with open(os.path.join(config_dir, "modules.json")) as f:
+        return [Module(info) for info in filter(_filter_if, json.load(f))]
 
 
 def _create_log(prefix):
@@ -203,16 +191,6 @@ def _filter_if(item):
                "distro": "%s-%s" % (distro_info.name, distro_info.version)}
 
     return eval(item["if"], globals)
-
-
-def _read_index(dir_name):
-    if config_dir is None:
-        return []
-
-    index_dir = os.path.join(config_dir, dir_name)
-    with open(os.path.join(index_dir, "index.json")) as f:
-        return [os.path.join(index_dir, json_file)
-                for json_file in json.load(f)]
 
 
 def _setup_state_dir(state_dir):
