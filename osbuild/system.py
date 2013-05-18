@@ -43,7 +43,7 @@ def check(remove=False, update=False, test=False, interactive=True,
 
     xvfb_proc, orig_display = xvfb.start()
 
-    if not _run_checks(package_manager, config.load_checks(), packages):
+    if not _run_checks(package_manager, config.load_dependencies(), packages):
         return False
 
     xvfb.stop(xvfb_proc, orig_display)

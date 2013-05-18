@@ -147,14 +147,43 @@ def load_prerequisites():
         return json.load(f)
 
 
-def load_checks():
+def load_dependencies(should_filter=True):
     with open(os.path.join(config_dir, "dependencies.json")) as f:
-        return filter(_filter_if, json.load(f))
+        info = json.load(f)
+
+        if should_filter:
+            return filter(_filter_if, info)
+        else:
+            return info
 
 
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
         return [Module(info) for info in filter(_filter_if, json.load(f))]
+
+
+def check():
+    dep_names = []
+    for dep_info in load_dependencies(should_filter=False):
+        dep_names.append(dep_info["name"])
+
+    for dep_info in load_prerequisites():
+        dep_names.append(dep_info["name"])
+
+    missing_packages = dep_names[:]
+    unused_packages = []
+
+    for name in load_packages().keys():
+        if name == "base-system":
+            continue
+
+        if name in missing_packages:
+            missing_packages.remove(name)
+        else:
+            unused_packages.append(name)
+
+    return {"missing_packages": missing_packages,
+            "unused_packages": unused_packages}
 
 
 def _create_log(prefix):
