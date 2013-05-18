@@ -57,10 +57,10 @@ class Module:
         os.chdir(self.local)
 
         if config.git_user_name:
-            command.run(["git", "config", "user.name"], config.git_user_name)
+            command.run(["git", "config", "user.name", config.git_user_name])
 
         if config.git_email:
-            command.run(["git", "config", "user.email"], config.git_email)
+            command.run(["git", "config", "user.email", config.git_email])
 
         if self.tag:
             command.run(["git", "checkout", self.tag])
