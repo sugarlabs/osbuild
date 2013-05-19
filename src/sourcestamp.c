@@ -41,6 +41,9 @@ list_dir(const char *dir, time_t *mtime, int *n_files)
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
+    char *current_dir;
+
+    current_dir = get_current_dir_name();
 
     dp = opendir(dir);
 
@@ -65,7 +68,8 @@ list_dir(const char *dir, time_t *mtime, int *n_files)
         }
     }
 
-    chdir("..");
+    chdir(current_dir);
+    free(current_dir);
 
     closedir(dp);
 }
