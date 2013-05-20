@@ -42,16 +42,6 @@ def run(cmd):
     command.run(args)
 
 
-def run_test(test_cmd, test_path):
-    args = [test_cmd,
-            "--test-command", "python -u %s" % test_path,
-            "--virtual"]
-
-    with open(config.log_path, "a") as f:
-        result = subprocess.call(args, stdout=f, stderr=subprocess.STDOUT)
-        return result == 0
-
-
 def collect_logs(source_path):
     logs = {}
     for filename in os.listdir(source_path):
