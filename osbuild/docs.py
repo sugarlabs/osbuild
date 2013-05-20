@@ -32,7 +32,7 @@ def build():
             output_dir = os.path.join(config.docs_dir, module.docs_dir)
             command.run(["docker", "-I", "-c", "friendly", "-o", output_dir])
 
-    return False
+    return True
 
 def clean():
     try:
