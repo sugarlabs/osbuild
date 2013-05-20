@@ -215,6 +215,7 @@ def _build_module(module, log=None):
     except subprocess.CalledProcessError:
         return False
 
+    git.get_module(module).stash()
     state.built_module_touch(module)
 
     return True
