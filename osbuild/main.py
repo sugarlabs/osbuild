@@ -25,9 +25,9 @@ from osbuild import state
 from osbuild import clean
 
 
-def run_build(full=False):
-    if full or state.full_build_is_required():
-        clean.clean(build_only=True)
+def run_build(clean_all=False):
+    if clean_all or state.full_build_is_required():
+        clean.clean(build_only=True, new_files=clean_all)
         environ.setup_gconf()
 
     state.full_build_touch()
