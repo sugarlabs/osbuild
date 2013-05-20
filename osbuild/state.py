@@ -70,7 +70,7 @@ def system_check_touch():
 def full_build_is_required():
     full_build = _load_state(_FULL_BUILD)
     if not full_build:
-        return True
+        return False
 
     return not (full_build["last"] == config.get_full_build())
 
