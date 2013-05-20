@@ -19,10 +19,10 @@ from osbuild import state
 from osbuild import docs
 
 
-def clean(build_only=False):
+def clean(build_only=False, new_files=False):
     print("\n= Clean =\n")
 
-    build.clean()
+    build.clean(new_files=new_files)
     docs.clean()
     state.clean(build_only=build_only)
 

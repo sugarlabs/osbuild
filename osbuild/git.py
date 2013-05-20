@@ -134,13 +134,19 @@ class Module:
 
         return "\n".join(annotation)
 
-    def clean(self):
+    def clean(self, new_files=False):
         try:
             os.chdir(self.local)
         except OSError:
             return False
 
-        command.run(["git", "clean", "-fdx"])
+        options = "-fd"
+        if new_files:
+            options = options + "x"
+        else:
+            options = options + "X"
+
+        command.run(["git", "clean", options])
 
         return True
 
