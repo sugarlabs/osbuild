@@ -56,6 +56,12 @@ def _check_module(module):
 
 def _volo_checker(module):
     orig_root = module.get_source_dir()
+
+    test_dir = os.path.join(orig_root, "test")
+    if os.path.exists(test_dir):
+        os.chdir(test_dir)
+        subprocess.check_call(["karma", "start", "--single-run"])
+
     for root, dirs, files in os.walk(module.get_source_dir()):
         if root == orig_root and "lib" in dirs:
             dirs.remove("lib")
