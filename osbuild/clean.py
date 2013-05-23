@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from osbuild import build
-from osbuild import logs
 from osbuild import state
 from osbuild import docs
 
@@ -25,6 +24,3 @@ def clean(build_only=False, new_files=False):
     build.clean(new_files=new_files)
     docs.clean()
     state.clean(build_only=build_only)
-
-    if not build_only:
-        logs.clean()

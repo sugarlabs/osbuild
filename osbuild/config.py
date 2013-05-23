@@ -21,7 +21,6 @@ from osbuild import utils
 
 config_dir = None
 docs_dir = None
-logs_dir = None
 install_dir = None
 lib_dir = None
 share_dir = None
@@ -32,7 +31,6 @@ package_files = None
 system_lib_dirs = None
 home_dir = None
 build_state_dir = None
-log_path = None
 git_user_name = None
 git_email = None
 
@@ -78,16 +76,13 @@ class Module:
         else:
             return None
 
+
 def setup(**kwargs):
     global config_dir
     config_dir = kwargs.get("config_dir", None)
 
     global docs_dir
     docs_dir = kwargs["docs_dir"]
-
-    global logs_dir
-    logs_dir = kwargs["logs_dir"]
-    utils.ensure_dir(logs_dir)
 
     global _prefs_path
     _prefs_path = kwargs.get("prefs_path", None)
@@ -97,10 +92,6 @@ def setup(**kwargs):
 
     _setup_state_dir(kwargs["state_dir"])
     _setup_install_dir(kwargs["install_dir"])
-
-    global log_path
-    if "log_name" in kwargs:
-        log_path = _create_log(kwargs["log_name"])
 
     if "git_user_name" in kwargs:
         global git_user_name
@@ -184,31 +175,6 @@ def check():
 
     return {"missing_packages": missing_packages,
             "unused_packages": unused_packages}
-
-
-def _create_log(prefix):
-    logfile_path = None
-    number = 0
-
-    while logfile_path is None:
-        name = "%s-%d.log" % (prefix, number)
-        path = os.path.join(logs_dir, name)
-
-        if not os.path.exists(path):
-            logfile_path = path
-
-        number = number + 1
-
-    link_path = os.path.join(logs_dir, "%s.log" % prefix)
-
-    try:
-        os.unlink(link_path)
-    except OSError:
-        pass
-
-    os.symlink(logfile_path, link_path)
-
-    return logfile_path
 
 
 def _filter_if(item):

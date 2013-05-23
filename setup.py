@@ -46,4 +46,5 @@ setup(name="osbuild",
       classifiers=classifiers,
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
+      install_requires=["plog==0.7"],
       ext_modules=[Extension("osbuild.sourcestamp", ["src/sourcestamp.c"])])

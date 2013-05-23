@@ -34,6 +34,7 @@ def build():
 
     return True
 
+
 def clean():
     try:
         shutil.rmtree(os.path.join(config.docs_dir))

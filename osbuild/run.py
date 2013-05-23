@@ -17,7 +17,6 @@ import os
 import signal
 import string
 import random
-import subprocess
 
 from osbuild import config
 from osbuild import command
@@ -39,7 +38,7 @@ def run(cmd):
     command.run(args)
 
 
-def collect_logs(source_path):
+def collect_logs(source_path, log_path):
     logs = {}
     for filename in os.listdir(source_path):
         if filename.endswith(".log"):
@@ -47,7 +46,7 @@ def collect_logs(source_path):
             with open(path) as f:
                 logs[filename] = f.read()
 
-    with open(config.log_path, "a") as f:
+    with open(log_path, "a") as f:
         for filename, log in logs.items():
             f.write("\n===== %s =====\n\n%s" % (filename, log))
 
