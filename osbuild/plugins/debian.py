@@ -40,8 +40,7 @@ class PackageManager(interfaces.PackageManager):
         args.append("install")
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test,
-                              interactive=self._interactive)
+        command.run_with_sudo(args, test=self._test)
 
     def remove_packages(self, packages):
         args = ["dpkg", "-P"]
@@ -59,8 +58,7 @@ class PackageManager(interfaces.PackageManager):
 
         args.append("upgrade")
 
-        command.run_with_sudo(args, test=self._test,
-                              interactive=self._interactive)
+        command.run_with_sudo(args, test=self._test)
 
     def find_all(self):
         return [package.name for package in self._cache

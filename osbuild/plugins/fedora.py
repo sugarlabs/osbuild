@@ -35,8 +35,7 @@ class PackageManager(interfaces.PackageManager):
         args.append("install")
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test,
-                              interactive=self._interactive)
+        command.run_with_sudo(args, test=self._test)
 
     def remove_packages(self, packages):
         args = ["rpm", "-e"]
@@ -52,8 +51,7 @@ class PackageManager(interfaces.PackageManager):
 
         args.append("update")
 
-        command.run_with_sudo(args, test=self._test,
-                              interactive=self._interactive)
+        command.run_with_sudo(args, test=self._test)
 
     def find_all(self):
         query_format = "--queryformat=[%{NAME} ]"
