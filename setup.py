@@ -38,7 +38,7 @@ class LintCommand(Command):
 
 setup(name="osbuild",
       packages=["osbuild", "osbuild.plugins", "osbuild"],
-      version="0.22",
+      version="0.23",
       description="Pull, build and test multiple source modules",
       author="Daniel Narvaez",
       author_email="dwnarvaez@gmail.com",
@@ -46,5 +46,5 @@ setup(name="osbuild",
       classifiers=classifiers,
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
-      install_requires=["plog==0.7"],
+      install_requires=["plog==0.8"],
       ext_modules=[Extension("osbuild.sourcestamp", ["src/sourcestamp.c"])])
