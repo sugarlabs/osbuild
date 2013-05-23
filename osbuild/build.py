@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import fnmatch
 import os
 import multiprocessing
@@ -122,6 +123,13 @@ def _pull_module(module, revision=None):
         git_module.update(revision)
     except subprocess.CalledProcessError:
         return False
+
+    if module.get_build_system() == "volo":
+        os.chdir(module.get_source_dir())
+        with open("package.json") as f:
+            package = json.load(f)
+            if "dependencies" in package["volo"]:
+                command.run(["volo", "-f", "add"])
 
     return True
 
