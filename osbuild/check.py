@@ -76,6 +76,14 @@ def _volo_checker(module):
 _checkers['volo'] = _volo_checker
 
 
+def _distutils_checker(module):
+    os.chdir(module.get_source_dir())
+    command.run(["python", "setup.py", "lint", "test"])
+    return True
+
+_checkers['distutils'] = _distutils_checker
+
+
 def _autotools_checker(module):
     result = True
     os.chdir(module.get_source_dir())
