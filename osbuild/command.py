@@ -36,6 +36,8 @@ def run(args, test=False, retry=0, watch_log=None):
                 time.sleep(60)
             else:
                 raise subprocess.CalledProcessError(returncode, args)
+        else:
+            break
 
 
 def run_with_sudo(args, test=False, retry=0):
