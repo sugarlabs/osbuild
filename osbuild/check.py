@@ -78,7 +78,18 @@ _checkers['volo'] = _volo_checker
 
 def _distutils_checker(module):
     os.chdir(module.get_source_dir())
-    command.run(["python", "setup.py", "lint", "test"])
+
+    command.run(["python", "setup.py", "lint"])
+
+    xvfb_proc, orig_display = xvfb.start()
+
+    try:
+        command.run(["python", "setup.py", "test"])
+    except subprocess.CalledProcessError:
+        result = False
+
+    xvfb.stop(xvfb_proc, orig_display)
+
     return True
 
 _checkers['distutils'] = _distutils_checker
