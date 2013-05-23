@@ -124,13 +124,6 @@ def _pull_module(module, revision=None):
     except subprocess.CalledProcessError:
         return False
 
-    if module.get_build_system() == "volo":
-        os.chdir(module.get_source_dir())
-        with open("package.json") as f:
-            package = json.load(f)
-            if "dependencies" in package["volo"]:
-                command.run(["volo", "-f", "add"])
-
     return True
 
 
@@ -181,7 +174,12 @@ _builders["distutils"] = _build_distutils
 
 
 def _build_volo(module, log):
-    pass
+    os.chdir(module.get_source_dir())
+
+    with open("package.json") as f:
+        package = json.load(f)
+        if "dependencies" in package["volo"]:
+            command.run(["volo", "-f", "add"])
 
 _builders["volo"] = _build_volo
 
