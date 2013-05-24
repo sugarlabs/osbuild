@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import fnmatch
 import os
 import multiprocessing
@@ -174,12 +173,7 @@ _builders["distutils"] = _build_distutils
 
 
 def _build_volo(module, log):
-    os.chdir(module.get_source_dir())
-
-    with open("package.json") as f:
-        package = json.load(f)
-        if "dependencies" in package["volo"]:
-            command.run(["volo", "-f", "add"])
+    pass
 
 _builders["volo"] = _build_volo
 

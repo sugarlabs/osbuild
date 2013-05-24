@@ -15,6 +15,7 @@
 
 import os
 import subprocess
+import json
 
 from osbuild import config
 from osbuild import command
@@ -55,15 +56,21 @@ def _check_module(module):
 
 
 def _volo_checker(module):
-    orig_root = module.get_source_dir()
+    source_dir = module.get_source_dir()
 
-    test_dir = os.path.join(orig_root, "test")
+    os.chdir(source_dir)
+    with open("package.json") as f:
+        package = json.load(f)
+        if "dependencies" in package["volo"]:
+            command.run(["volo", "-f", "add"])
+
+    test_dir = os.path.join(source_dir, "test")
     if os.path.exists(test_dir):
         os.chdir(test_dir)
         subprocess.check_call(["karma", "start", "--single-run"])
 
     for root, dirs, files in os.walk(module.get_source_dir()):
-        if root == orig_root and "lib" in dirs:
+        if root == source_dir and "lib" in dirs:
             dirs.remove("lib")
         for f in files:
             if f.endswith(".js"):
