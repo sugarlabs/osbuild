@@ -49,7 +49,7 @@ class PackageManager(interfaces.PackageManager):
         command.run_with_sudo(args, test=self._test)
 
     def update(self):
-        command.run_with_sudo(["apt-get", "update"], test=self._test)
+        command.run_with_sudo(["apt-get", "dist-upgrade"], test=self._test)
 
         args = ["apt-get"]
 
