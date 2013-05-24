@@ -56,7 +56,7 @@ class PackageManager(interfaces.PackageManager):
         if not self._interactive:
             args.append("-y")
 
-        args.append("upgrade")
+        args.append("dist-upgrade")
 
         command.run_with_sudo(args, test=self._test)
 
