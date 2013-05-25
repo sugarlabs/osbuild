@@ -16,6 +16,9 @@
 import os
 import subprocess
 import json
+import logging
+import difflib
+from StringIO import StringIO
 
 from osbuild import config
 from osbuild import command
@@ -55,6 +58,19 @@ def _check_module(module):
     return True
 
 
+def _diff_output(output, path):
+    result = False
+
+    with open(path) as f:
+        diff = difflib.unified_diff(f.readlines(),
+                                    StringIO(output).readlines())
+        for line in diff:
+            logging.error(line)
+            result = True
+
+    return result
+
+
 def _volo_checker(module):
     source_dir = module.get_source_dir()
 
@@ -73,11 +89,32 @@ def _volo_checker(module):
         if root == source_dir and "lib" in dirs:
             dirs.remove("lib")
         for f in files:
+            path = os.path.join(root, f)
+
             if f.endswith(".js"):
+
                 try:
-                    command.run(["jshint", os.path.join(root, f)])
+                    command.run(["jshint", path])
                 except subprocess.CalledProcessError:
                     return False
+
+                logging.info("Running js-beautify on %s" % path)
+                args = ["js-beautify", "--good-stuff", path]
+                if _diff_output(subprocess.check_output(args), path):
+                    return False
+            elif f.endswith(".css"):
+                logging.info("Running js-beautify on %s" % path)
+                args = ["js-beautify", "--type", "css",
+                        "--indent-size", "2", path]
+                if _diff_output(subprocess.check_output(args), path):
+                    return False
+            elif f.endswith(".html"):
+                logging.info("Running js-beautify on %s" % path)
+                args = ["js-beautify", "--type", "html",
+                        "--indent-size", "2", path]
+                if _diff_output(subprocess.check_output(args), path):
+                    return False
+
     return True
 
 _checkers['volo'] = _volo_checker
