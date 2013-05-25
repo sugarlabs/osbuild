@@ -85,7 +85,8 @@ class Module:
 
             revision = self.tag
 
-        if revision == self._get_commit_id():
+        commit_id = self._get_commit_id()
+        if revision == commit_id:
             os.chdir(orig_cwd)
             return
 
@@ -95,6 +96,7 @@ class Module:
         if revision:
             command.run(["git", "checkout", revision])
         else:
+            command.run(["git", "checkout", self._branch])
             command.run(["git", "merge", "--ff-only",
                          "origin/%s" % self._branch])
 
