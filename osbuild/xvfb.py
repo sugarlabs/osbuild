@@ -34,6 +34,7 @@ def start():
         time.sleep(1)
         if tries > 0:
             tries = tries - 1
+            break
 
     logging.error("Cannot access Xvfb display")
 
@@ -48,9 +49,10 @@ def stop(xvfb_proc, orig_display):
 
 
 def _try_display(display):
-    result = subprocess.call(args=["xdpyinfo", "--display", display],
+    result = subprocess.call(args=["xdpyinfo", "-display", display],
                              stdout=utils.devnull,
                              stderr=subprocess.STDOUT)
+
     return result == 0
 
 
