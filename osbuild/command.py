@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import subprocess
 import time
 
@@ -23,6 +24,8 @@ def run(args, test=False, retry=0, watch_log=None):
     if test:
         print(" ".join(args))
         return
+
+    logging.info("Running command %s" % " ".join(args))
 
     tries = 0
     while tries < retry + 1:
