@@ -84,6 +84,8 @@ _checkers['volo'] = _volo_checker
 
 
 def _distutils_checker(module):
+    result = True
+
     os.chdir(module.get_source_dir())
 
     command.run(["python", "setup.py", "lint"])
@@ -97,7 +99,7 @@ def _distutils_checker(module):
 
     xvfb.stop(xvfb_proc, orig_display)
 
-    return True
+    return result
 
 _checkers['distutils'] = _distutils_checker
 
