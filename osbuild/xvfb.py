@@ -30,7 +30,7 @@ def start():
     os.environ["DISPLAY"] = xvfb_display
 
     tries = 30
-    while not _try_display():
+    while not _try_display(xvfb_display):
         time.sleep(1)
         if tries > 0:
             tries = tries - 1
@@ -48,8 +48,7 @@ def stop(xvfb_proc, orig_display):
 
 
 def _try_display(display):
-    display_name = ":%s" % display
-    result = subprocess.call(args=["xdpyinfo", "--display", display_name],
+    result = subprocess.call(args=["xdpyinfo", "--display", display],
                              stdout=utils.devnull,
                              stderr=subprocess.STDOUT)
     return result == 0
@@ -57,5 +56,6 @@ def _try_display(display):
 
 def _find_free_display():
     for i in range(100, 1000):
-        if not _try_display(i):
-            return ":%s" % i
+        display = ":%s" % i
+        if not _try_display(display):
+            return display
