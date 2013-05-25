@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
+import time
 import subprocess
 
 from osbuild import utils
@@ -27,6 +29,14 @@ def start():
     orig_display = os.environ.get("DISPLAY", None)
     os.environ["DISPLAY"] = xvfb_display
 
+    tries = 30
+    while not _try_display():
+        time.sleep(1)
+        if tries > 0:
+            tries = tries - 1
+
+    logging.error("Cannot access Xvfb display")
+
     return (xvfb_proc, orig_display)
 
 
@@ -37,11 +47,15 @@ def stop(xvfb_proc, orig_display):
     xvfb_proc.terminate()
 
 
+def _try_display(display):
+    display_name = ":%s" % display
+    result = subprocess.call(args=["xdpyinfo", "--display", display_name],
+                             stdout=utils.devnull,
+                             stderr=subprocess.STDOUT)
+    return result == 0
+
+
 def _find_free_display():
     for i in range(100, 1000):
-        display = ":%s" % i
-        result = subprocess.call(args=["xdpyinfo", "--display", display],
-                                 stdout=utils.devnull,
-                                 stderr=subprocess.STDOUT)
-        if result > 0:
-            return display
+        if not _try_display(i):
+            return ":%s" % i
