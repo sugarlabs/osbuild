@@ -6,6 +6,7 @@ Pull, build and test multiple source modules.
 Hacking
 =======
 
-Please run the automated tests before submitting patches
+Please run lint and tests before submitting patches
 
-    python setup.py check test
+    python setup.py lint
+    python setup.py test
