@@ -17,5 +17,7 @@ import os
 
 
 def start(rcfile):
-    bash_path = "/bin/bash"
-    os.execlp(bash_path, bash_path, "--rcfile", rcfile)
+    os.environ["OSBUILD_SHELL"] = "yes"
+
+    args = ["/bin/bash", "--rcfile", rcfile]
+    os.execlp(args[0], *args)
