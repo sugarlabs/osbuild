@@ -14,10 +14,27 @@
 # limitations under the License.
 
 import os
+import textwrap
+
+from osbuild import config
 
 
 def start(rcfile):
     os.environ["OSBUILD_SHELL"] = "yes"
 
-    args = ["/bin/bash", "--rcfile", rcfile]
+    script = """
+             if [ -f ~/.bashrc ]; then
+                . ~/.bashrc
+             fi
+
+             export PS1="[osbuild \W]$ "
+             """
+
+    bashrc_path = os.path.join(config.etc_dir, "bashrc")
+
+    with open(bashrc_path, "w") as f:
+        f.write(textwrap.dedent(script))
+
+    args = ["/bin/bash", "--rcfile", bashrc_path]
+
     os.execlp(args[0], *args)
