@@ -47,7 +47,7 @@ def load_plugins():
         imp.load_module(name, f, filename, desc)
 
 
-def setup(config_args, check_args):
+def setup(config_args, check_args={}):
     load_plugins()
 
     config.setup(**config_args)
