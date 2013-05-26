@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+import json
 import pkgutil
 import imp
 
@@ -23,6 +25,7 @@ from osbuild import system
 from osbuild import build
 from osbuild import state
 from osbuild import clean
+from osbuild import shell
 
 
 def run_build(clean_all=False):
@@ -59,3 +62,29 @@ def setup(config_args, check_args={}):
     environ.setup_gconf()
 
     return True
+
+
+def cmd_pull():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("module", nargs="?",
+                        help="name of the module to pull")
+    parser.add_argument("--revisions",
+                        help="json dict with the revisions to pull")
+    args = parser.parse_args()
+
+    if args.module:
+        if not build.pull_one(args.module):
+            return False
+    else:
+        revisions = {}
+        if args.revisions:
+            revisions = json.loads(args.revisions)
+
+        if not build.pull(revisions):
+            return False
+
+    return True
+
+
+def cmd_shell():
+    shell.start()
