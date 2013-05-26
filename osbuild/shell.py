@@ -19,7 +19,7 @@ import textwrap
 from osbuild import config
 
 
-def start(rcfile):
+def start():
     os.environ["OSBUILD_SHELL"] = "yes"
 
     script = """
