@@ -1,7 +1,7 @@
 About
 =====
 
-Pull, build and test multiple source modules.
+Pull, build and test multiple source code modules.
 
 Hacking
 =======
