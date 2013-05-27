@@ -32,8 +32,8 @@ class LintCommand(Command):
         pass
 
     def run(self):
-        subprocess.check_call(["pep8", "."])
-        subprocess.check_call(["pyflakes", "."])
+        subprocess.check_call(["pep8", "osbuild"])
+        subprocess.check_call(["pyflakes", "osbuild"])
 
 
 setup(name="osbuild",
