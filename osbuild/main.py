@@ -88,3 +88,21 @@ def cmd_pull():
 
 def cmd_shell():
     shell.start()
+
+
+def cmd_build():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("module", nargs="?",
+                        help="name of the module to build")
+    parser.add_argument("--clean-all", action="store_true",
+                        help="clean everything before building")
+    args = parser.parse_args()
+
+    if args.module:
+        if not build.build_one(args.module):
+            return False
+    else:
+        if not run_build(clean_all=args.clean_all):
+            return False
+
+    return True
