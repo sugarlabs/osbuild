@@ -8,5 +8,4 @@ Hacking
 
 Please run lint and tests before submitting patches
 
-    python setup.py lint
-    python setup.py test
+    python setup.py lint test
