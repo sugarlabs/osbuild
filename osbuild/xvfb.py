@@ -34,8 +34,9 @@ def start():
         time.sleep(1)
         if tries > 0:
             tries = tries - 1
+            logging.error("Cannot access Xvfb display, retrying...")
         else:
-            logging.error("Cannot access Xvfb display")
+            logging.error("Giving up.")
             break
 
     return (xvfb_proc, orig_display)
