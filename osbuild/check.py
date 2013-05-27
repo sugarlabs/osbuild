@@ -64,9 +64,7 @@ def _diff_output(output, path):
     with open(path) as f:
         diff = difflib.unified_diff(f.readlines(),
                                     StringIO(output).readlines())
-        for line in diff:
-            logging.error(line)
-            result = True
+        logging.error("".join([line for line in diff]))
 
     return result
 
