@@ -49,7 +49,7 @@ class PackageManager(interfaces.PackageManager):
         if not self._interactive:
             args.append("-y")
 
-        args.append("update")
+        args.extend(["update", "--skip-broken"])
 
         command.run_with_sudo(args, test=self._test)
 
