@@ -76,7 +76,7 @@ def _volo_checker(module):
     with open("package.json") as f:
         package = json.load(f)
         if "dependencies" in package["volo"]:
-            command.run(["volo", "-f", "add"])
+            command.run(["volo", "-nostamp", "-f", "add"])
 
     test_dir = os.path.join(source_dir, "test")
     if os.path.exists(test_dir):
