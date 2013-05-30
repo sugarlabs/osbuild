@@ -85,15 +85,29 @@ def build(full=False):
     return True
 
 
+def _clean_module(module, new_files=False):
+    print("* Cleaning %s" % module.name)
+
+    git_module = git.get_module(module)
+    git_module.clean(new_files=new_files)
+
+    return True
+
+
+def clean_one(module_name):
+    for module in config.load_modules():
+        if module.name == module_name:
+            return _clean_module(module)
+
+    return False
+
+
 def clean(new_files=False):
     print("* Emptying install directory")
     _empty_dir(config.install_dir)
 
     for module in config.load_modules():
-        print("* Cleaning %s" % module.name)
-
-        git_module = git.get_module(module)
-        git_module.clean(new_files=new_files)
+        _clean_module(module, new_files)
 
 
 def _ccache_reset():

@@ -24,3 +24,5 @@ def clean(build_only=False, new_files=False):
     build.clean(new_files=new_files)
     docs.clean()
     state.clean(build_only=build_only)
+
+    return True

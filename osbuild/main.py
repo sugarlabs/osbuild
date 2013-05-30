@@ -64,6 +64,23 @@ def setup(config_args, check_args={}):
     return True
 
 
+def cmd_clean():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("module", nargs="?",
+                        help="name of the module to clean")
+    parser.add_argument("--new-files", action="store_true",
+                        help="remove also new files")
+    args = parser.parse_args()
+
+    if args.module:
+        if not build.clean_one(args.module):
+            return False
+    else:
+        if not clean.clean(new_files=args.new_files):
+            return False
+
+    return True
+
 def cmd_pull():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
