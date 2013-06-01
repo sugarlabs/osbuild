@@ -65,7 +65,7 @@ def _diff_output(output, path):
 
         joined = "".join([line for line in diff])
         if joined:
-            logging.error("".join([line for line in diff]))
+            logging.error(joined)
             return True
 
     return False
