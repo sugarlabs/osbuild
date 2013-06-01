@@ -62,9 +62,11 @@ def _diff_output(output, path):
     with open(path) as f:
         diff = difflib.unified_diff(f.readlines(),
                                     StringIO(output).readlines())
-        logging.error("".join([line for line in diff]))
 
-        return True
+        joined = "".join([line for line in diff]
+        if joined:
+            logging.error("".join([line for line in diff]))
+            return True
 
     return False
 
