@@ -81,6 +81,7 @@ def cmd_clean():
 
     return True
 
+
 def cmd_pull():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
