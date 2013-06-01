@@ -59,14 +59,14 @@ def _check_module(module):
 
 
 def _diff_output(output, path):
-    result = False
-
     with open(path) as f:
         diff = difflib.unified_diff(f.readlines(),
                                     StringIO(output).readlines())
         logging.error("".join([line for line in diff]))
 
-    return result
+        return True
+
+    return False
 
 
 def _volo_checker(module):
