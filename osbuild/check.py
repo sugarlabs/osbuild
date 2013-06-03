@@ -65,7 +65,8 @@ def _diff_output(output, path):
 
         joined = "".join([line for line in diff])
         if joined:
-            logging.error(joined)
+            print("\njs-beautify check failed for %s\n\n" % path)
+            print(joined)
             return True
 
     return False
