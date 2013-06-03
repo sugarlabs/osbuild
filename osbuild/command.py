@@ -43,10 +43,11 @@ def run(args, test=False, retry=0, watch_log=None):
             break
 
 
-def run_with_sudo(args, test=False, retry=0):
+def run_with_sudo(args, test=False):
     args_with_sudo = ["sudo"]
     args_with_sudo.extend(args)
 
     print(" ".join(args_with_sudo))
 
-    run(args_with_sudo, test=test, retry=retry)
+    if not test:
+        subprocess.check_call(args_with_sudo)
