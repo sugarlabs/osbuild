@@ -52,6 +52,7 @@ class Module:
         self.makefile_name = info.get("makefile_name", "Makefile")
         self.has_docs = info.get("has_docs", False)
         self.docs_dir = info.get("docs_dir", self.name)
+        self.docs_extras = info.get("docs_extras", None)
 
     def get_source_dir(self):
         return os.path.join(get_source_dir(), self.name)

@@ -17,7 +17,6 @@ import logging
 import os
 import plog
 import time
-import subprocess
 
 
 def start():
