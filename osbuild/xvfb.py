@@ -59,6 +59,6 @@ def _find_free_display():
     for i in range(100, 1000):
         display = ":%s" % i
 
-        if not os.path.exists("/tmp", ".X%s-lock" % i):
+        if not os.path.exists(os.path.join("/tmp", ".X%s-lock" % i)):
             if not _try_display(display):
                 return display
