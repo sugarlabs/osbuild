@@ -36,6 +36,7 @@ git_email = None
 
 _source_dir = None
 _prefs_path = None
+_cached_prefs = None
 
 
 class Module:
@@ -109,11 +110,24 @@ def get_source_dir():
     return _source_dir
 
 
-def get_pref(name):
-    defaults = {"PROFILE": "default"}
+def get_prefs():
+    global _cached_prefs
 
-    prefs = _read_prefs()
-    return prefs.get(name, defaults.get(name, None))
+    if _cached_prefs:
+        return _cached_prefs
+
+    # Defaults
+    prefs = {"profile": "default"}
+
+    try:
+        with open(_prefs_path) as f:
+            prefs.update(json.load(f))
+    except IOError:
+        pass
+
+    _cached_prefs = prefs
+
+    return prefs
 
 
 def get_full_build():
@@ -194,7 +208,7 @@ def _setup_state_dir(state_dir):
     utils.ensure_dir(base_home_dir)
 
     global home_dir
-    home_dir = os.path.join(base_home_dir, get_pref("PROFILE"))
+    home_dir = os.path.join(base_home_dir, get_prefs()["profile"])
     utils.ensure_dir(home_dir)
 
 
@@ -226,19 +240,3 @@ def _setup_install_dir(dir, relocatable=False):
     system_lib_dirs = ["/usr/lib"]
     if distro_info.lib_dir is not None:
         system_lib_dirs.append(os.path.join("/usr", distro_info.lib_dir))
-
-
-def _read_prefs():
-    global _prefs_path
-
-    if _prefs_path is None or not os.path.exists(_prefs_path):
-        return {}
-
-    prefs = {}
-    with open(_prefs_path) as f:
-        for line in f.readlines():
-            splitted = line.strip().split("=")
-            if len(splitted) == 2:
-                prefs[splitted[0]] = splitted[1]
-
-    return prefs

@@ -25,13 +25,13 @@ from osbuild import command
 def run(cmd):
     args = [cmd, "--home-dir", config.home_dir]
 
-    resolution = config.get_pref("RESOLUTION")
-    if resolution:
-        args.extend(["--resolution", resolution])
+    prefs = config.get_prefs()
 
-    output = config.get_pref("OUTPUT")
-    if output:
-        args.extend(["--output", output])
+    if "resolution" in prefs:
+        args.extend(["--resolution", prefs["resolution"]])
+
+    if "output" in prefs:
+        args.extend(["--output", prefs["output"]])
 
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
