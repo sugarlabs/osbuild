@@ -116,12 +116,6 @@ def get_pref(name):
     return prefs.get(name, defaults.get(name, None))
 
 
-def set_pref(name, value):
-    prefs = _read_prefs()
-    prefs[name] = value
-    _save_prefs(prefs)
-
-
 def get_full_build():
     with open(os.path.join(config_dir, "config.json")) as f:
         config = json.load(f)
@@ -248,14 +242,3 @@ def _read_prefs():
                 prefs[splitted[0]] = splitted[1]
 
     return prefs
-
-
-def _save_prefs(prefs):
-    global _prefs_path
-
-    if _prefs_path is None:
-        return
-
-    with open(_prefs_path, "w") as f:
-        for pref in prefs.items():
-            f.write("%s\n" % "=".join(pref))
