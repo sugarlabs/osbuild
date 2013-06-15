@@ -47,4 +47,4 @@ setup(name="osbuild",
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
       install_requires=["plog==0.14", "json-format==0.1"],
-      ext_modules=[Extension("osbuild.sourcestamp", ["src/sourcestamp.c"])])
+      ext_modules=[Extension("osbuild.ext", ["src/ext.c"])])

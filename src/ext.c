@@ -22,17 +22,17 @@
 #include <string.h>
 #include <sys/stat.h>
 
-static PyObject *sourcestamp_compute(PyObject *self, PyObject *args);
+static PyObject *ext_compute_sourcestamp(PyObject *self, PyObject *args);
 
 static PyMethodDef module_methods[] = {
-    {"compute", sourcestamp_compute, METH_VARARGS, NULL},
+    {"compute_sourcestamp", ext_compute_sourcestamp, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 
 PyMODINIT_FUNC
-initsourcestamp(void)
+initext(void)
 {
-    Py_InitModule("sourcestamp", module_methods);
+    Py_InitModule("ext", module_methods);
 }
 
 static void
@@ -75,7 +75,7 @@ list_dir(const char *dir, time_t *mtime, int *n_files)
 }
 
 static
-PyObject *sourcestamp_compute(PyObject *self, PyObject *args)
+PyObject *ext_compute_sourcestamp(PyObject *self, PyObject *args)
 {
     time_t mtime = 0;
     int n_files = 0;
