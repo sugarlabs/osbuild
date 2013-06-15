@@ -36,6 +36,11 @@ class LintCommand(Command):
         subprocess.check_call(["pyflakes", "osbuild"])
 
 
+extension = Extension("osbuild.ext",
+                      ["src/ext.c"],
+                      libraries=["X11"])
+
+
 setup(name="osbuild",
       packages=["osbuild", "osbuild.plugins", "osbuild"],
       version="0.33",
@@ -47,4 +52,4 @@ setup(name="osbuild",
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
       install_requires=["plog==0.14", "json-format==0.1"],
-      ext_modules=[Extension("osbuild.ext", ["src/ext.c"])])
+      ext_modules=[extension])
