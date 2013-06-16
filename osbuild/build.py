@@ -63,16 +63,24 @@ def pull(revisions={}, lazy=False):
     return True
 
 
-def build(full=False):
+def build():
     to_build = []
+    to_clean = []
     for module in config.load_modules():
-        if not state.built_module_is_unchanged(module):
+        if state.built_module_should_clean(module):
+            to_clean.append(module)
+            to_build.append(module)
+        elif not state.built_module_is_unchanged(module):
             to_build.append(module)
 
     if not to_build:
         return True
 
     print("\n= Building =\n")
+
+    for module in to_clean:
+        if not _clean_module(module):
+            return False
 
     _ccache_reset()
 

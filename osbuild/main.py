@@ -38,7 +38,7 @@ def run_build(clean_all=False):
     if not build.pull(lazy=True):
         return False
 
-    if not build.build(full=False):
+    if not build.build():
         return False
 
     return True

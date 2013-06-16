@@ -48,6 +48,7 @@ class Module:
         self.auto_install = info.get("auto-install", False)
         self.options = info.get("options", [])
         self.options_evaluated = info.get("options_evaluated", [])
+        self.clean_stamp = info.get("clean_stamp", None)
         self.has_checks = info.get("has_checks", False)
         self.no_libdir = info.get("no_libdir", False)
         self.makefile_name = info.get("makefile_name", "Makefile")
