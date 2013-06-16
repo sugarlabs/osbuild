@@ -179,6 +179,13 @@ _builders["autotools"] = _build_autotools
 
 
 def _build_distutils(module, log):
+    site_packages = os.path.join(config.install_dir, "lib", "python2.7",
+                                 "site-packages")
+    try:
+        os.makedirs(site_packages)
+    except OSError:
+        pass
+
     setup = os.path.join(module.get_source_dir(), "setup.py")
     command.run(["python", setup, "install", "--prefix",
                  config.install_dir], log)
