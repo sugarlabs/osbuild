@@ -55,13 +55,20 @@ class Module:
 
         self._remotes = {"origin": remote}
 
-        if parsed_url.netloc == "github.com":
-            name = os.path.basename(parsed_url.path)
+        if parsed_url.netloc != "github.com":
+            return
 
-            for fork in config.get_prefs().get("github_forks", []):
-                if name == os.path.basename(fork):
-                    self._remotes["origin"] = "git@github.com:/%s" % fork
-                    self._remotes["upstream"] = remote
+        prefs = config.get_prefs().get("github", {})
+
+        name = os.path.basename(parsed_url.path)
+
+        if parsed_url.path[1:] in prefs.get("ssh", []):
+            self._remotes["origin"] = "git@github.com:%s" % parsed_url.path
+
+        for fork in prefs.get("forks", []):
+            if name == os.path.basename(fork):
+                self._remotes["upstream"] = self._remotes["origin"]
+                self._remotes["origin"] = "git@github.com:/%s" % fork
 
     def _clone(self):
         os.chdir(self._path)

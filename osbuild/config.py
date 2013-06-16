@@ -119,13 +119,14 @@ def get_prefs():
     # Defaults
     prefs = {"profile": "default"}
 
-    try:
-        with open(_prefs_path) as f:
-            prefs.update(json.load(f))
-    except IOError:
-        pass
+    if _prefs_path is not None:
+        try:
+            with open(_prefs_path) as f:
+                prefs.update(json.load(f))
+        except IOError:
+            pass
 
-    _cached_prefs = prefs
+        _cached_prefs = prefs
 
     return prefs
 
