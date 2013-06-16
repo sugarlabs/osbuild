@@ -61,8 +61,7 @@ class Module:
             for fork in config.get_prefs().get("github_forks", []):
                 if name == os.path.basename(fork):
                     self._remotes["origin"] = "git@github.com:/%s" % fork
-                    self._remotes["upstream"] = "git@github.com:%s" % \
-                                                parsed_url.path
+                    self._remotes["upstream"] = remote
 
     def _clone(self):
         os.chdir(self._path)
