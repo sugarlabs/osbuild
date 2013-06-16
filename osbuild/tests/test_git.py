@@ -73,8 +73,9 @@ class TestGit(unittest.TestCase):
     def test_update_on_master(self):
         module = self._setup_module()
 
-        self._write_file(module.remote, "masterchange")
-        self._commit(module.remote, "masterchange")
+        remote = module._remotes["origin"]
+        self._write_file(remote, "masterchange")
+        self._commit(remote, "masterchange")
 
         module.update()
 
@@ -86,8 +87,9 @@ class TestGit(unittest.TestCase):
 
         module = self._create_module(remote, branch="test")
 
-        self._write_file(module.remote, "branchchange")
-        self._commit(module.remote, "branchchange")
+        remote = module._remotes["origin"]
+        self._write_file(remote, "branchchange")
+        self._commit(remote, "branchchange")
 
         module.update()
 
@@ -99,8 +101,9 @@ class TestGit(unittest.TestCase):
         module = self._create_module(remote, tag=self._get_head(remote))
         module.update()
 
-        self._write_file(module.remote, "detachedchange")
-        self._commit(module.remote, "detachedchange")
+        remote = module._remotes["origin"]
+        self._write_file(remote, "detachedchange")
+        self._commit(remote, "detachedchange")
 
         module.tag = self._get_head(remote)
         module.update()

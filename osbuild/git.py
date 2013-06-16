@@ -15,6 +15,7 @@
 
 import os
 import subprocess
+import urlparse
 
 from osbuild import command
 from osbuild import config
@@ -39,7 +40,8 @@ class Module:
         if path is None or name is None or remote is None:
             raise RuntimeError("path, name and remote are required")
 
-        self.remote = remote
+        self._compute_remotes(remote)
+
         self.local = os.path.join(path, name)
         self.tag = tag
 
@@ -48,13 +50,31 @@ class Module:
         self._branch = branch
         self._retry = 10
 
+    def _compute_remotes(self, remote):
+        parsed_url = urlparse.urlparse(remote)
+
+        self._remotes = {"origin": remote}
+
+        if parsed_url.netloc == "github.com":
+            name = os.path.basename(parsed_url.path)
+
+            for fork in config.get_prefs().get("github_forks", []):
+                if name == os.path.basename(fork):
+                    self._remotes["origin"] = "git@github.com:/%s" % fork
+                    self._remotes["upstream"] = "git@github.com:%s" % \
+                                                parsed_url.path
+
     def _clone(self):
         os.chdir(self._path)
 
-        command.run(["git", "clone", "--progress", self.remote, self._name],
-                    retry=self._retry)
+        command.run(["git", "clone", "--progress", self._remotes["origin"],
+                     self._name], retry=self._retry)
 
         os.chdir(self.local)
+
+        for name, remote in self._remotes.items():
+            if name != "origin":
+                command.run(["git", "remote", "add", name, remote])
 
         if config.git_user_name:
             command.run(["git", "config", "user.name", config.git_user_name])
@@ -90,7 +110,8 @@ class Module:
             os.chdir(orig_cwd)
             return
 
-        command.run(["git", "remote", "set-url", "origin", self.remote])
+        command.run(["git", "remote", "set-url", "origin",
+                     self._remotes["origin"]])
         command.run(["git", "fetch"], retry=self._retry)
 
         if revision:
