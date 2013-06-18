@@ -55,11 +55,15 @@ class Module:
         self.has_docs = info.get("has_docs", False)
         self.docs_dir = info.get("docs_dir", self.name)
         self.docs_extras = info.get("docs_extras", None)
+        self.build_system = info.get("build_system", None)
+
+        if self.build_system is None:
+            self.build_system = self._guess_build_system()
 
     def get_source_dir(self):
         return os.path.join(get_source_dir(), self.name)
 
-    def get_build_system(self):
+    def _guess_build_system(self):
         source_dir = self.get_source_dir()
 
         package_json = os.path.join(source_dir, "package.json")

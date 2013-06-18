@@ -49,13 +49,11 @@ def check():
 
 
 def _check_module(module):
-    build_system = module.get_build_system()
+    if not module.has_checks:
+        return True
 
-    if build_system and module.has_checks:
-        print("* Checking %s" % module.name)
-        return _checkers[build_system](module)
-
-    return True
+    print("* Checking %s" % module.name)
+    return _checkers[module.build_system](module)
 
 
 def _diff_output(output, path):

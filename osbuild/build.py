@@ -230,9 +230,7 @@ def _build_module(module, log=None):
     os.chdir(source_dir)
 
     try:
-        build_system = module.get_build_system()
-        if build_system:
-            _builders[build_system](module, log)
+        _builders[module.build_system](module, log)
     except subprocess.CalledProcessError:
         return False
 
