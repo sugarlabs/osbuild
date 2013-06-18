@@ -20,6 +20,7 @@ from osbuild import config
 from osbuild import ext
 
 _BUILT_MODULES = "builtmodules"
+_PULLED_MODULES = "pulledmodules"
 _FULL_BUILD = "fullbuild"
 _SYSTEM_CHECK = "syscheck"
 
@@ -28,18 +29,25 @@ def built_module_touch(module):
     built_modules = _load_state(_BUILT_MODULES, {})
 
     source_stamp = ext.compute_sourcestamp(module.get_source_dir())
-    built_modules[module.name] = {"source_stamp": source_stamp,
-                                  "clean_stamp": module.clean_stamp}
+    built_modules[module.name] = {"source_stamp": source_stamp}
 
     _save_state(_BUILT_MODULES, built_modules)
 
 
-def built_module_should_clean(module):
-    built_module = _get_built_module(module)
-    if built_module is None:
+def pulled_module_touch(module):
+    pulled_modules = _load_state(_PULLED_MODULES, {})
+
+    pulled_modules[module.name] = {"clean_stamp": module.clean_stamp}
+
+    _save_state(_PULLED_MODULES, pulled_modules)
+
+
+def pulled_module_should_clean(module):
+    pulled_module = _get_pulled_module(module)
+    if pulled_module is None:
         return False
 
-    return built_module.get("clean_stamp", None) != module.clean_stamp
+    return pulled_module.get("clean_stamp", None) != module.clean_stamp
 
 
 def built_module_is_unchanged(module):
@@ -106,6 +114,11 @@ def clean(build_only=False):
 def _get_built_module(module):
     built_modules = _load_state(_BUILT_MODULES, {})
     return built_modules.get(module.name, None)
+
+
+def _get_pulled_module(module):
+    pulled_modules = _load_state(_PULLED_MODULES, {})
+    return pulled_modules.get(module.name, None)
 
 
 def _get_state_path(name):
