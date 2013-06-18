@@ -51,5 +51,5 @@ setup(name="osbuild",
       classifiers=classifiers,
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
-      install_requires=["plog==0.14", "json-format==0.1"],
+      install_requires=["plog==0.15", "json-format==0.1"],
       ext_modules=[extension])
