@@ -18,8 +18,6 @@ import os
 import plog
 import time
 
-from osbuild import ext
-
 
 def start():
     xvfb_display = _find_free_display()
@@ -31,7 +29,7 @@ def start():
     os.environ["DISPLAY"] = xvfb_display
 
     tries = 30
-    while not ext.can_open_display(xvfb_display):
+    while not _try_display(xvfb_display):
         time.sleep(1)
         if tries > 0:
             tries = tries - 1
@@ -50,10 +48,17 @@ def stop(xvfb_proc, orig_display):
     xvfb_proc.terminate()
 
 
+def _try_display(display):
+    process = plog.LoggedProcess(["xdpyinfo", "-display", display])
+    process.execute()
+
+    return process.wait(print_error=False) == 0
+
+
 def _find_free_display():
     for i in range(100, 1000):
         display = ":%s" % i
 
         if not os.path.exists(os.path.join("/tmp", ".X%s-lock" % i)):
-            if not ext.can_open_display(display):
+            if not _try_display(display):
                 return display

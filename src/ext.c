@@ -21,14 +21,11 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <X11/Xlib.h>
 
 static PyObject *ext_compute_sourcestamp(PyObject *self, PyObject *args);
-static PyObject *ext_can_open_display(PyObject *self, PyObject *args);
 
 static PyMethodDef module_methods[] = {
     {"compute_sourcestamp", ext_compute_sourcestamp, METH_VARARGS, NULL},
-    {"can_open_display", ext_can_open_display, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 
@@ -94,23 +91,3 @@ PyObject *ext_compute_sourcestamp(PyObject *self, PyObject *args)
 
     return Py_BuildValue("s", stamp);
 }
-
-static
-PyObject *ext_can_open_display(PyObject *self, PyObject *args)
-{
-    const char *display_name;
-
-    if (!PyArg_ParseTuple(args, "s", &display_name)) {
-        return NULL;
-    }
-
-    Display *dpy = XOpenDisplay(display_name);
-
-    if (dpy) {
-        XCloseDisplay(dpy);
-        return Py_True;
-    } else {
-        return Py_False;
-    }
-}
-
