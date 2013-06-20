@@ -17,6 +17,7 @@ from distutils import sysconfig
 import os
 
 from osbuild import config
+from osbuild import utils
 
 
 def add_path(name, path):
@@ -86,8 +87,7 @@ def setup_gconf():
     gconf_path_dir = _get_gconf_path_dir()
     gconf_path = _get_gconf_path()
 
-    if not os.path.exists(gconf_path_dir):
-        os.makedirs(gconf_path_dir)
+    utils.ensure_dir(gconf_path_dir)
 
     if not os.path.exists(gconf_path):
         input = open("/etc/gconf/2/path")
