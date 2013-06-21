@@ -151,7 +151,7 @@ def _eval_option(option):
     return eval(option, {"prefix": config.install_dir})
 
 
-def _build_autotools(module, log):
+def _build_autotools(module):
     # Workaround for aclocal 1.11 (fixed in 1.12)
     aclocal_path = os.path.join(config.share_dir, "aclocal")
     utils.ensure_dir(aclocal_path)
@@ -173,48 +173,48 @@ def _build_autotools(module, log):
         for option in module.options_evaluated:
             args.append(_eval_option(option))
 
-        command.run(args, log)
+        command.run(args)
 
     jobs = multiprocessing.cpu_count() * 2
 
-    command.run(["make", "-j", "%d" % jobs], log)
-    command.run(["make", "install"], log)
+    command.run(["make", "-j", "%d" % jobs])
+    command.run(["make", "install"])
 
     _unlink_libtool_files()
 
 _builders["autotools"] = _build_autotools
 
 
-def _build_distutils(module, log):
+def _build_distutils(module):
     site_packages = os.path.join(config.install_dir, "lib", "python2.7",
                                  "site-packages")
     utils.ensure_dir(site_packages)
 
     setup = os.path.join(module.get_source_dir(), "setup.py")
     command.run(["python", setup, "install", "--prefix",
-                 config.install_dir], log)
+                 config.install_dir])
 
 _builders["distutils"] = _build_distutils
 
 
-def _build_volo(module, log):
+def _build_volo(module):
     pass
 
 _builders["volo"] = _build_volo
 
 
-def _build_npm(module, log):
+def _build_npm(module):
     if os.path.exists(os.path.join(module.get_source_dir(),
                       "Gruntfile.coffee")):
         command.run(["npm", "install", "grunt"])
         command.run(["grunt", "build"])
 
-    command.run(["npm", "install", "-g", "--prefix", config.install_dir], log)
+    command.run(["npm", "install", "-g", "--prefix", config.install_dir])
 
 _builders["npm"] = _build_npm
 
 
-def _build_module(module, log=None):
+def _build_module(module):
     print("* Building %s" % module.name)
 
     source_dir = module.get_source_dir()
@@ -228,7 +228,7 @@ def _build_module(module, log=None):
 
     try:
         if module.build_system is not None:
-            _builders[module.build_system](module, log)
+            _builders[module.build_system](module)
     except subprocess.CalledProcessError:
         return False
 

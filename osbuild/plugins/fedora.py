@@ -22,8 +22,7 @@ from osbuild.plugins import interfaces
 
 
 class PackageManager(interfaces.PackageManager):
-    def __init__(self, test=False, interactive=True):
-        self._test = test
+    def __init__(self, interactive=True):
         self._interactive = interactive
 
     def install_packages(self, packages):
@@ -35,13 +34,13 @@ class PackageManager(interfaces.PackageManager):
         args.append("install")
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def remove_packages(self, packages):
         args = ["rpm", "-e"]
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def update(self):
         args = ["yum"]
@@ -51,7 +50,7 @@ class PackageManager(interfaces.PackageManager):
 
         args.extend(["update", "--skip-broken"])
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def find_all(self):
         query_format = "--queryformat=[%{NAME} ]"

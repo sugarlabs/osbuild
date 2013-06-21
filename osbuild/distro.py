@@ -28,10 +28,10 @@ def register_package_manager(name, package_manager):
     _package_managers[name] = package_manager
 
 
-def get_package_manager(test=False, interactive=True):
+def get_package_manager(interactive=True):
     global _package_managers
     package_manager_class = _package_managers[get_distro_info().name]
-    return package_manager_class(test=test, interactive=interactive)
+    return package_manager_class(interactive=interactive)
 
 
 def print_distro_info():

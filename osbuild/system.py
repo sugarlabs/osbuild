@@ -25,14 +25,13 @@ from osbuild import xvfb
 _checkers = {}
 
 
-def check(remove=False, update=False, test=False, interactive=True,
+def check(remove=False, update=False, interactive=True,
           lazy=True):
     if lazy:
         if state.system_check_is_unchanged():
             return True
 
-    package_manager = \
-        distro.get_package_manager(test=test, interactive=interactive)
+    package_manager = distro.get_package_manager(interactive=interactive)
 
     distro.print_distro_info()
     packages = config.load_packages()

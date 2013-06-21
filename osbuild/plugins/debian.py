@@ -23,10 +23,9 @@ from osbuild.plugins import interfaces
 
 
 class PackageManager(interfaces.PackageManager):
-    def __init__(self, test=False, interactive=True):
+    def __init__(self, interactive=True):
         import apt
 
-        self._test = test
         self._interactive = interactive
 
         self._cache = apt.cache.Cache()
@@ -40,16 +39,16 @@ class PackageManager(interfaces.PackageManager):
         args.append("install")
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def remove_packages(self, packages):
         args = ["dpkg", "-P"]
         args.extend(packages)
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def update(self):
-        command.run_with_sudo(["apt-get", "update"], test=self._test)
+        command.run_with_sudo(["apt-get", "update"])
 
         args = ["apt-get"]
 
@@ -58,7 +57,7 @@ class PackageManager(interfaces.PackageManager):
 
         args.append("dist-upgrade")
 
-        command.run_with_sudo(args, test=self._test)
+        command.run_with_sudo(args)
 
     def find_all(self):
         return [package.name for package in self._cache

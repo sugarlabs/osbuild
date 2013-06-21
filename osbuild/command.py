@@ -20,11 +20,7 @@ import time
 import plog
 
 
-def run(args, test=False, retry=0, watch_log=None):
-    if test:
-        print(" ".join(args))
-        return
-
+def run(args, retry=0, watch_log=None):
     logging.info("Running command %s" % " ".join(args))
 
     tries = 0
@@ -45,11 +41,10 @@ def run(args, test=False, retry=0, watch_log=None):
             break
 
 
-def run_with_sudo(args, test=False):
+def run_with_sudo(args):
     args_with_sudo = ["sudo"]
     args_with_sudo.extend(args)
 
     print(" ".join(args_with_sudo))
 
-    if not test:
-        subprocess.check_call(args_with_sudo)
+    subprocess.check_call(args_with_sudo)
