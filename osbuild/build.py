@@ -158,12 +158,14 @@ def _build_autotools(module):
 
     makefile_path = os.path.join(module.get_source_dir(), module.makefile_name)
 
-    if not os.path.exists(makefile_path):
-        configure = os.path.join(module.get_source_dir(), "autogen.sh")
-        if not os.path.exists(configure):
-            configure = os.path.join(module.get_source_dir(), "configure")
+    os.chdir(module.get_source_dir())
 
-        args = [configure, "--prefix", config.install_dir]
+    if not os.path.exists(makefile_path):
+        configure = "autogen.sh"
+        if not os.path.exists(configure):
+            configure = "configure"
+
+        args = ["./%s" % configure, "--prefix", config.install_dir]
 
         if not module.no_libdir:
             args.extend(["--libdir", config.lib_dir])
