@@ -58,6 +58,7 @@ def pull(revisions={}, lazy=False):
     for module in to_pull:
         if state.pulled_module_should_clean(module):
             if not _clean_module(module):
+                print("! Could not clean module, pull failed.")
                 return False
 
     for module in to_pull:
@@ -90,13 +91,11 @@ def build():
     return True
 
 
-def _clean_module(module, new_files=False):
+def _clean_module(module):
     print("* Cleaning %s" % module.name)
 
     git_module = git.get_module(module)
-    git_module.clean(new_files=new_files)
-
-    return True
+    return git_module.clean()
 
 
 def clean_one(module_name):
@@ -107,12 +106,13 @@ def clean_one(module_name):
     return False
 
 
-def clean(new_files=False):
+def clean(continue_on_error=True):
     print("* Emptying install directory")
     _empty_dir(config.install_dir)
 
     for module in config.load_modules():
-        _clean_module(module, new_files)
+        if not _clean_module(module) and not continue_on_error:
+            return False
 
 
 def _ccache_reset():

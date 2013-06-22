@@ -19,6 +19,7 @@ import urlparse
 
 from osbuild import command
 from osbuild import config
+from osbuild import utils
 
 
 def _chdir(func):
@@ -163,21 +164,72 @@ class Module:
 
         return "\n".join(annotation)
 
-    def clean(self, new_files=False):
+    def clean(self):
         try:
             os.chdir(self.local)
         except OSError:
             return False
 
-        options = "-fd"
-        if new_files:
-            options = options + "x"
-        else:
-            options = options + "X"
+        result = True
 
-        command.run(["git", "clean", options])
+        if not config.interactive:
+            command.run(["git", "clean", "-fdx"])
+            command.run(["git", "reset", "--hard"])
+            return result
 
-        return True
+        command.run(["git", "clean", "-fdX"])
+
+        files = subprocess.check_output(["git", "ls-files",
+                                         "--others"]).strip()
+        if files:
+            print("\n# The repository contains files which have not been "
+                  "added to the index:\n")
+            print(files)
+            print("\nPress d to delete them, k to keep them.\n")
+
+            while True:
+                key = utils.getch()
+                if key == "d":
+                    command.run(["git", "clean", "-fdx"])
+                    break
+                elif key == "k":
+                    result = False
+                    break
+
+        added = subprocess.check_output(["git", "diff", "--cached",
+                                         "--name-only"]).strip()
+        modified = subprocess.check_output(["git", "ls-files",
+                                            "--modified"]).strip()
+        deleted = subprocess.check_output(["git", "ls-files",
+                                           "--deleted"]).strip()
+
+        if added or modified or deleted:
+            print("\n# The repository content has been modified.")
+
+            if added:
+                print("\nAdded files:")
+                print(added)
+
+            if modified:
+                print("\nModified files:")
+                print(modified)
+
+            if deleted:
+                print("\nDeleted files")
+                print(deleted)
+
+            print("\nPress r to reset the changes, k to keep them.\n")
+
+            while True:
+                key = utils.getch()
+                if key == "r":
+                    command.run(["git", "reset", "--hard"])
+                    break
+                elif key == "k":
+                    result = False
+                    break
+
+        return result
 
     def _get_commit_id(self):
         return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()

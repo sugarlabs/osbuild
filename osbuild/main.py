@@ -30,7 +30,10 @@ from osbuild import shell
 
 def run_build(clean_all=False):
     if clean_all or state.full_build_is_required():
-        clean.clean(build_only=True, new_files=clean_all)
+        if not clean.clean(build_only=True, continue_on_error=False):
+            print("! Clean failed, cannot continue.")
+            return False
+
         environ.setup_gconf()
 
     state.full_build_touch()
@@ -68,15 +71,13 @@ def cmd_clean():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
                         help="name of the module to clean")
-    parser.add_argument("--new-files", action="store_true",
-                        help="remove also new files")
     args = parser.parse_args()
 
     if args.module:
         if not build.clean_one(args.module):
             return False
     else:
-        if not clean.clean(new_files=args.new_files):
+        if not clean.clean():
             return False
 
     return True

@@ -19,16 +19,14 @@ import subprocess
 from osbuild import command
 from osbuild import distro
 from osbuild.plugins import interfaces
+from osbuild import config
 
 
 class PackageManager(interfaces.PackageManager):
-    def __init__(self, interactive=True):
-        self._interactive = interactive
-
     def install_packages(self, packages):
         args = ["yum"]
 
-        if not self._interactive:
+        if not config.interactive:
             args.append("-y")
 
         args.append("install")
@@ -45,7 +43,7 @@ class PackageManager(interfaces.PackageManager):
     def update(self):
         args = ["yum"]
 
-        if not self._interactive:
+        if not config.interactive:
             args.append("-y")
 
         args.extend(["update", "--skip-broken"])

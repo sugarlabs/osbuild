@@ -20,9 +20,6 @@ from osbuild.plugins import interfaces
 
 
 class PackageManager(interfaces.PackageManager):
-    def __init__(self, interactive=True):
-        pass
-
     def install_packages(self, packages):
         pass
 

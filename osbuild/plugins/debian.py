@@ -20,20 +20,19 @@ import subprocess
 from osbuild import command
 from osbuild import distro
 from osbuild.plugins import interfaces
+from osbuild import config
 
 
 class PackageManager(interfaces.PackageManager):
-    def __init__(self, interactive=True):
+    def __init__(self):
         import apt
-
-        self._interactive = interactive
 
         self._cache = apt.cache.Cache()
 
     def install_packages(self, packages):
         args = ["apt-get", "--no-install-recommends"]
 
-        if not self._interactive:
+        if not config.interactive:
             args.append("-y")
 
         args.append("install")
@@ -52,7 +51,7 @@ class PackageManager(interfaces.PackageManager):
 
         args = ["apt-get"]
 
-        if not self._interactive:
+        if not config.interactive:
             args.append("-y")
 
         args.append("dist-upgrade")

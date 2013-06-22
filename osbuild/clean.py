@@ -18,10 +18,13 @@ from osbuild import state
 from osbuild import docs
 
 
-def clean(build_only=False, new_files=False):
+def clean(build_only=False, continue_on_error=True):
     print("\n= Clean =\n")
 
-    build.clean(new_files=new_files)
+    if not build.clean(continue_on_error=continue_on_error):
+        if not continue_on_error:
+            return False
+
     docs.clean()
     state.clean(build_only=build_only)
 

@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import os
+import tty
+import termios
 
 devnull = open("/dev/null", "w")
 
@@ -23,3 +26,14 @@ def ensure_dir(path):
         os.makedirs(path)
     except OSError:
         pass
+
+
+def getch():
+    fd = sys.stdin.fileno()
+    tty_attributes = termios.tcgetattr(fd)
+
+    try:
+        tty.setraw(fd)
+        return sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, tty_attributes)

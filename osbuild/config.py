@@ -19,6 +19,7 @@ import os
 from osbuild import distro
 from osbuild import utils
 
+interactive = True
 config_dir = None
 docs_dir = None
 install_dir = None
@@ -107,6 +108,10 @@ def setup(**kwargs):
     if "git_email" in kwargs:
         global git_email
         git_email = kwargs["git_email"]
+
+    if "interactive" in kwargs:
+        global interactive
+        interactive = kwargs["interactive"]
 
 
 def get_source_dir():
