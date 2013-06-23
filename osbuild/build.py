@@ -114,6 +114,8 @@ def clean(continue_on_error=True):
         if not _clean_module(module) and not continue_on_error:
             return False
 
+    return True
+
 
 def _ccache_reset():
     subprocess.check_call(["ccache", "-z"], stdout=utils.devnull)
