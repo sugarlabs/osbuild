@@ -14,8 +14,8 @@
 # limitations under the License.
 
 import os
-import subprocess
 import shutil
+from distutils.sysconfig import parse_makefile
 
 from osbuild import config
 from osbuild import command
@@ -56,8 +56,8 @@ def _autotools_dist_builder(module):
     os.chdir(source_dir)
     command.run(["make", "distcheck"])
 
-    version = subprocess.check_output("./version")
-    tarball = "%s-%s.tar.gz" % (module.name, version)
+    makefile = parse_makefile(os.path.join(source_dir, "Makefile"))
+    tarball = "%s-%s.tar.gz" % (module.name, makefile["VERSION"])
 
     shutil.move(os.path.join(source_dir, tarball),
                 os.path.join(config.get_dist_dir(), tarball))
