@@ -32,6 +32,8 @@ def dist_one(module_name):
 
 
 def dist():
+    shutil.rmtree(config.get_dist_dir(), ignore_errors=True)
+
     modules = config.load_modules()
     for module in modules:
         if not _dist_module(module):
