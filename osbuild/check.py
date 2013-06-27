@@ -151,7 +151,7 @@ def _autotools_checker(module):
 
     try:
         command.run(["dbus-launch", "--exit-with-session",
-                     "make", "check"])
+                     "make", "test"])
     except subprocess.CalledProcessError:
         result = False
 
