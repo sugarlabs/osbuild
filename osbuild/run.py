@@ -40,6 +40,10 @@ def run(cmd):
 
 def collect_logs(source_path, log_path):
     logs = {}
+
+    if not os.path.exists(source_path):
+        return
+
     for filename in os.listdir(source_path):
         if filename.endswith(".log"):
             path = os.path.join(source_path, filename)
