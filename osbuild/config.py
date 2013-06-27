@@ -36,6 +36,7 @@ git_user_name = None
 git_email = None
 
 _source_dir = None
+_dist_dir = None
 _prefs_path = None
 _cached_prefs = None
 
@@ -56,6 +57,7 @@ class Module:
         self.has_docs = info.get("has_docs", False)
         self.docs_dir = info.get("docs_dir", self.name)
         self.docs_extras = info.get("docs_extras", None)
+        self.dist = info.get("dist", False)
         self.build_system = info.get("build_system", None)
 
         if self.build_system is None:
@@ -98,6 +100,9 @@ def setup(**kwargs):
     global _source_dir
     _source_dir = kwargs["source_dir"]
 
+    global _dist_dir
+    _dist_dir = kwargs["dist_dir"]
+
     _setup_state_dir(kwargs["state_dir"])
     _setup_install_dir(kwargs["install_dir"])
 
@@ -112,6 +117,12 @@ def setup(**kwargs):
     if "interactive" in kwargs:
         global interactive
         interactive = kwargs["interactive"]
+
+
+def get_dist_dir():
+    global _dist_dir
+    utils.ensure_dir(_dist_dir)
+    return _dist_dir
 
 
 def get_source_dir():
