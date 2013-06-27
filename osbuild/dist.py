@@ -60,4 +60,7 @@ def _autotools_dist_builder(module):
     shutil.move(os.path.join(source_dir, tarball),
                 os.path.join(config.get_dist_dir(), tarball))
 
+    return True
+
+
 _dist_builders['autotools'] = _autotools_dist_builder
