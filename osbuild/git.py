@@ -164,12 +164,8 @@ class Module:
 
         return "\n".join(annotation)
 
+    @_chdir
     def clean(self):
-        try:
-            os.chdir(self.local)
-        except OSError:
-            return False
-
         result = True
 
         if not config.interactive:
