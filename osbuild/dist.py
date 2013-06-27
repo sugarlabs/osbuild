@@ -57,7 +57,7 @@ def _autotools_dist_builder(module):
     command.run(["make", "distcheck"])
 
     makefile = parse_makefile(os.path.join(source_dir, "Makefile"))
-    tarball = "%s-%s.tar.gz" % (module.name, makefile["VERSION"])
+    tarball = "%s-%s.tar.xz" % (module.name, makefile["VERSION"])
 
     shutil.move(os.path.join(source_dir, tarball),
                 os.path.join(config.get_dist_dir(), tarball))
