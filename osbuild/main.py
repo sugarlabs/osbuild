@@ -118,10 +118,8 @@ def cmd_build():
     args = parser.parse_args()
 
     if args.module:
-        if not build.build_one(args.module):
-            return False
+        result = build.build_one(args.module):
     else:
-        if not run_build(clean_all=args.clean_all):
-            return False
+        result = run_build(clean_all=args.clean_all):
 
-    return True
+    return result
