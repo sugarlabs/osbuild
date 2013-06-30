@@ -112,8 +112,8 @@ def clean_one(module_name):
 
 
 def clean(continue_on_error=True):
-    print("* Emptying install directory")
-    _empty_dir(config.install_dir)
+    print("* Removing install directory")
+    shutil.rmtree(config.install_dir, ignore_errors=True)
 
     for module in config.load_modules():
         if not _clean_module(module) and not continue_on_error:
@@ -242,8 +242,3 @@ def _build_module(module):
     state.built_module_touch(module)
 
     return True
-
-
-def _empty_dir(dir_path):
-    shutil.rmtree(dir_path, ignore_errors=True)
-    os.mkdir(dir_path)

@@ -15,6 +15,7 @@
 
 import os
 import json
+import shutil
 
 from osbuild import config
 from osbuild import ext
@@ -100,15 +101,24 @@ def full_build_touch():
 def clean(build_only=False):
     print("* Deleting state")
 
-    names = [_BUILT_MODULES, _FULL_BUILD]
+    names = [_BUILT_MODULES, _FULL_BUILD, _PULLED_MODULES]
     if not build_only:
         names.append(_SYSTEM_CHECK)
 
     for name in names:
         try:
-            os.unlink(_get_state_path(name))
+            os.unlink(_get_build_state_path(name))
         except OSError:
             pass
+
+    if not os.listdir(config.build_state_dir):
+        os.rmdir(config.build_state_dir)
+
+    if not build_only:
+        shutil.rmtree(config.home_state_dir)
+
+    if not os.listdir(config.state_dir):
+        os.rmdir(config.state_dir)
 
 
 def _get_built_module(module):
@@ -121,7 +131,7 @@ def _get_pulled_module(module):
     return pulled_modules.get(module.name, None)
 
 
-def _get_state_path(name):
+def _get_build_state_path(name):
     return os.path.join(config.build_state_dir, "%s.json" % name)
 
 
@@ -129,7 +139,7 @@ def _load_state(name, default=None):
     state = default
 
     try:
-        with open(_get_state_path(name)) as f:
+        with open(_get_build_state_path(name)) as f:
             state = json.load(f)
     except IOError:
         pass
@@ -138,6 +148,6 @@ def _load_state(name, default=None):
 
 
 def _save_state(name, state):
-    with open(_get_state_path(name), "w+") as f:
+    with open(_get_build_state_path(name), "w+") as f:
         json.dump(state, f, indent=4)
         f.write('\n')

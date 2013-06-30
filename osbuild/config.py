@@ -31,6 +31,8 @@ libexec_dir = None
 package_files = None
 system_lib_dirs = None
 home_dir = None
+state_dir = None
+home_state_dir = None
 build_state_dir = None
 git_user_name = None
 git_email = None
@@ -219,22 +221,25 @@ def _filter_if(item):
     return eval(item["if"], globals)
 
 
-def _setup_state_dir(state_dir):
+def _setup_state_dir(path):
+    global state_dir
+    state_dir = path
     utils.ensure_dir(state_dir)
 
     global build_state_dir
     build_state_dir = os.path.join(state_dir, "build")
     utils.ensure_dir(build_state_dir)
 
-    base_home_dir = os.path.join(state_dir, "home")
-    utils.ensure_dir(base_home_dir)
+    global home_state_dir
+    home_state_dir = os.path.join(state_dir, "home")
+    utils.ensure_dir(home_state_dir)
 
     global home_dir
-    home_dir = os.path.join(base_home_dir, get_prefs()["profile"])
+    home_dir = os.path.join(home_state_dir, get_prefs()["profile"])
     utils.ensure_dir(home_dir)
 
 
-def _setup_install_dir(dir, relocatable=False):
+def _setup_install_dir(path):
     global system_lib_dirs
     global install_dir
     global share_dir
@@ -243,7 +248,7 @@ def _setup_install_dir(dir, relocatable=False):
     global lib_dir
     global libexec_dir
 
-    install_dir = dir
+    install_dir = path
     utils.ensure_dir(install_dir)
 
     share_dir = os.path.join(install_dir, "share")
