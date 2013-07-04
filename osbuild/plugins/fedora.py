@@ -118,10 +118,8 @@ class DistroInfo(interfaces.DistroInfo):
 
         if release == "Fedora release 18 (Spherical Cow)":
             self.version = "18"
-            self.gnome_version = "3.6"
         elif release == "Fedora release 19 (Schrödinger’s Cat)":
             self.version = "19"
-            self.gnome_version = "3.8"
         else:
             self.supported = False
 

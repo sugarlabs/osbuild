@@ -32,7 +32,6 @@ class DistroInfo(interfaces.DistroInfo):
 
         self.name = "ubuntu"
         self.version = "unknown"
-        self.gnome_version = "3.4"
         self.valid = True
         self.supported = (arch in ["i386", "i686", "x86_64"])
         self.lib_dir = None
@@ -58,11 +57,7 @@ class DistroInfo(interfaces.DistroInfo):
 
         self.version = os_info.get("VERSION_ID", None)
 
-        if self.version == "13.04":
-            self.gnome_version = "3.6"
-        elif self.version == "13.10":
-            self.gnome_version = "3.6"
-        else:
+        if self.version not in ["13.04", "13.10"]:
             self.supported = False
 
     def _get_architecture(self):

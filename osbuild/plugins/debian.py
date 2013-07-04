@@ -107,7 +107,6 @@ class DistroInfo(interfaces.DistroInfo):
 
         self.name = "debian"
         self.version = "unknown"
-        self.gnome_version = "3.4"
         self.valid = True
         self.supported = (arch in ["i686", "x86_64"])
         self.lib_dir = None

@@ -43,7 +43,6 @@ class DistroInfo(interfaces.DistroInfo):
         self.lib_dir = None
         self.name = "unknown"
         self.version = "unknown"
-        self.gnome_version = "3.4"
         self.valid = True
         self.supported = False
 

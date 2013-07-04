@@ -54,9 +54,6 @@ class DistroInfo:
         self.version = None
         """The distribution version."""
 
-        self.gnome_version = None
-        """The major version of GNOME shipped with the distribution."""
-
         self.valid = False
         """If set to True we are running on this distribution and the
            attributes are all valid.

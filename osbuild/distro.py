@@ -39,7 +39,6 @@ def print_distro_info():
     print("\n= Distribution information =\n")
     print("Name: %s" % info.name)
     print("Version: %s" % info.version)
-    print("GNOME version: %s" % info.gnome_version)
     print("Lib directory: %s" % info.lib_dir)
     print("Supported: %s\n" % info.supported)
 
