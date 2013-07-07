@@ -90,7 +90,11 @@ def setup_gconf():
     utils.ensure_dir(gconf_path_dir)
 
     if not os.path.exists(gconf_path):
-        input = open("/etc/gconf/2/path")
+        try:
+            input = open("/etc/gconf/2/path")
+        except IOError:
+            return
+
         output = open(gconf_path, "w")
 
         for line in input.readlines():
