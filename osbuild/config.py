@@ -162,7 +162,7 @@ def get_full_build():
 
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
-        return json.load(f)
+        return [Module(info) for info in json.load(f)]
 
 
 def _setup_state_dir(path):
