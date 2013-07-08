@@ -200,15 +200,5 @@ def _setup_install_dir(path):
     bin_dir = os.path.join(install_dir, "bin")
     etc_dir = os.path.join(install_dir, "etc")
     libexec_dir = os.path.join(install_dir, "libexec")
-
-    distro_info = distro.get_distro_info()
-
-    relative_lib_dir = distro_info.lib_dir
-    if relative_lib_dir is None:
-        relative_lib_dir = "lib"
-
-    lib_dir = os.path.join(install_dir, relative_lib_dir)
-
-    system_lib_dirs = ["/usr/lib"]
-    if distro_info.lib_dir is not None:
-        system_lib_dirs.append(os.path.join("/usr", distro_info.lib_dir))
+    lib_dir = os.path.join(install_dir, "lib64")
+    system_lib_dirs = ["/usr/lib64"]
