@@ -37,7 +37,7 @@ class LintCommand(Command):
 
 
 setup(name="osbuild",
-      packages=["osbuild", "osbuild.plugins", "osbuild"],
+      packages=["osbuild"],
       version="0.33",
       description="Pull, build and test multiple source modules",
       author="Daniel Narvaez",
