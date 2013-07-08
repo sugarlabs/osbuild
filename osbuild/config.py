@@ -16,7 +16,6 @@
 import json
 import os
 
-from osbuild import distro
 from osbuild import utils
 
 interactive = True

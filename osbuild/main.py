@@ -15,8 +15,6 @@
 
 import argparse
 import json
-import pkgutil
-import imp
 
 from osbuild import config
 from osbuild import environ
