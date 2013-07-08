@@ -20,7 +20,6 @@ import imp
 
 from osbuild import config
 from osbuild import environ
-from osbuild import plugins
 from osbuild import build
 from osbuild import state
 from osbuild import clean
@@ -44,12 +43,6 @@ def run_build(clean_all=False):
         return False
 
     return True
-
-
-def load_plugins():
-    for loader, name, ispkg in pkgutil.iter_modules(plugins.__path__):
-        f, filename, desc = imp.find_module(name, plugins.__path__)
-        imp.load_module(name, f, filename, desc)
 
 
 def setup(config_args, check_args={}):
