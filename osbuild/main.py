@@ -46,8 +46,6 @@ def run_build(clean_all=False):
 
 
 def setup(config_args, check_args={}):
-    load_plugins()
-
     config.setup(**config_args)
 
     environ.setup_variables()
