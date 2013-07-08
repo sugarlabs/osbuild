@@ -65,25 +65,6 @@ def built_module_is_unchanged(module):
     return old_source_stamp == new_source_stamp
 
 
-def system_check_is_unchanged():
-    system_check = _load_state(_SYSTEM_CHECK)
-    if not system_check or not "config_stamp" in system_check:
-        return False
-
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
-
-    return system_check["config_stamp"] == config_stamp
-
-
-def system_check_touch():
-    system_check = _load_state(_SYSTEM_CHECK, {})
-
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
-    system_check["config_stamp"] = config_stamp
-
-    _save_state(_SYSTEM_CHECK, system_check)
-
-
 def full_build_is_required():
     full_build = _load_state(_FULL_BUILD)
     if not full_build:

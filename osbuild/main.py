@@ -21,7 +21,6 @@ import imp
 from osbuild import config
 from osbuild import environ
 from osbuild import plugins
-from osbuild import system
 from osbuild import build
 from osbuild import state
 from osbuild import clean
@@ -57,9 +56,6 @@ def setup(config_args, check_args={}):
     load_plugins()
 
     config.setup(**config_args)
-
-    if not system.check(**check_args):
-        return False
 
     environ.setup_variables()
     environ.setup_gconf()

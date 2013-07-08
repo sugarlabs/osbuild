@@ -161,63 +161,9 @@ def get_full_build():
     return config["full_build"]
 
 
-def load_packages():
-    with open(os.path.join(config_dir, "packages.json")) as f:
-        return json.load(f)
-
-
-def load_prerequisites():
-    with open(os.path.join(config_dir, "prerequisites.json")) as f:
-        return json.load(f)
-
-
-def load_dependencies(should_filter=True):
-    with open(os.path.join(config_dir, "dependencies.json")) as f:
-        info = json.load(f)
-
-        if should_filter:
-            return filter(_filter_if, info)
-        else:
-            return info
-
-
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
-        return [Module(info) for info in filter(_filter_if, json.load(f))]
-
-
-def check():
-    dep_names = []
-    for dep_info in load_dependencies(should_filter=False):
-        dep_names.append(dep_info["name"])
-
-    for dep_info in load_prerequisites():
-        dep_names.append(dep_info["name"])
-
-    missing_packages = dep_names[:]
-    unused_packages = []
-
-    for name in load_packages().keys():
-        if name == "base-system":
-            continue
-
-        if name in missing_packages:
-            missing_packages.remove(name)
-        else:
-            unused_packages.append(name)
-
-    return {"missing_packages": missing_packages,
-            "unused_packages": unused_packages}
-
-
-def _filter_if(item):
-    if "if" not in item:
-        return True
-
-    distro_info = distro.get_distro_info()
-    globals = {"distro": "%s-%s" % (distro_info.name, distro_info.version)}
-
-    return eval(item["if"], globals)
+        return json.load(f)
 
 
 def _setup_state_dir(path):
