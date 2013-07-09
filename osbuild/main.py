@@ -43,7 +43,7 @@ def run_build(clean_all=False):
     return True
 
 
-def setup(config_args, check_args={}):
+def setup(config_args):
     config.setup(**config_args)
 
     environ.setup_variables()
