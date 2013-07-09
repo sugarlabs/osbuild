@@ -92,14 +92,14 @@ def clean(build_only=False):
         except OSError:
             pass
 
-    if not os.listdir(config.build_state_dir):
-        os.rmdir(config.build_state_dir)
-
     if not build_only:
+        if not os.listdir(config.build_state_dir):
+            os.rmdir(config.build_state_dir)
+
         shutil.rmtree(config.home_state_dir)
 
-    if not os.listdir(config.state_dir):
-        os.rmdir(config.state_dir)
+        if not os.listdir(config.state_dir):
+            os.rmdir(config.state_dir)
 
 
 def _get_built_module(module):
