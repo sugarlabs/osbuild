@@ -153,13 +153,6 @@ def get_prefs():
     return prefs
 
 
-def get_full_build():
-    with open(os.path.join(config_dir, "config.json")) as f:
-        config = json.load(f)
-
-    return config["full_build"]
-
-
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
         return [Module(info) for info in json.load(f)]

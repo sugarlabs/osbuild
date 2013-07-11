@@ -19,21 +19,11 @@ import json
 from osbuild import config
 from osbuild import environ
 from osbuild import build
-from osbuild import state
 from osbuild import clean
 from osbuild import shell
 
 
 def run_build(clean_all=False):
-    if clean_all or state.full_build_is_required():
-        if not clean.clean(build_only=True, continue_on_error=False):
-            print("! Clean failed, cannot continue.")
-            return False
-
-        environ.setup_gconf()
-
-    state.full_build_touch()
-
     if not build.pull(lazy=True):
         return False
 
