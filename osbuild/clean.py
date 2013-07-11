@@ -18,7 +18,7 @@ from osbuild import state
 from osbuild import docs
 
 
-def clean(continue_on_error=True):
+def clean(build_only=False, continue_on_error=True):
     print("\n= Clean =\n")
 
     if not build.clean(continue_on_error=continue_on_error):
@@ -26,6 +26,6 @@ def clean(continue_on_error=True):
             return False
 
     docs.clean()
-    state.clean()
+    state.clean(build_only=build_only)
 
     return True
