@@ -23,7 +23,7 @@ from osbuild import clean
 from osbuild import shell
 
 
-def run_build(clean_all=False):
+def run_build():
     if not build.pull(lazy=True):
         return False
 
@@ -88,13 +88,11 @@ def cmd_build():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
                         help="name of the module to build")
-    parser.add_argument("--clean-all", action="store_true",
-                        help="clean everything before building")
     args = parser.parse_args()
 
     if args.module:
         result = build.build_one(args.module)
     else:
-        result = run_build(clean_all=args.clean_all)
+        result = run_build()
 
     return result
