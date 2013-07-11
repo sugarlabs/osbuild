@@ -22,8 +22,6 @@ from osbuild import ext
 
 _BUILT_MODULES = "builtmodules"
 _PULLED_MODULES = "pulledmodules"
-_FULL_BUILD = "fullbuild"
-_SYSTEM_CHECK = "syscheck"
 
 
 def built_module_touch(module):
@@ -65,45 +63,10 @@ def built_module_is_unchanged(module):
     return old_source_stamp == new_source_stamp
 
 
-def system_check_is_unchanged():
-    system_check = _load_state(_SYSTEM_CHECK)
-    if not system_check or not "config_stamp" in system_check:
-        return False
-
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
-
-    return system_check["config_stamp"] == config_stamp
-
-
-def system_check_touch():
-    system_check = _load_state(_SYSTEM_CHECK, {})
-
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
-    system_check["config_stamp"] = config_stamp
-
-    _save_state(_SYSTEM_CHECK, system_check)
-
-
-def full_build_is_required():
-    full_build = _load_state(_FULL_BUILD)
-    if not full_build:
-        return False
-
-    return not (full_build["last"] == config.get_full_build())
-
-
-def full_build_touch():
-    full_build = _load_state(_FULL_BUILD, {})
-    full_build["last"] = config.get_full_build()
-    _save_state(_FULL_BUILD, full_build)
-
-
-def clean(build_only=False):
+def clean():
     print("* Deleting state")
 
-    names = [_BUILT_MODULES, _FULL_BUILD, _PULLED_MODULES]
-    if not build_only:
-        names.append(_SYSTEM_CHECK)
+    names = [_BUILT_MODULES, _PULLED_MODULES]
 
     for name in names:
         try:
@@ -114,8 +77,7 @@ def clean(build_only=False):
     if not os.listdir(config.build_state_dir):
         os.rmdir(config.build_state_dir)
 
-    if not build_only:
-        shutil.rmtree(config.home_state_dir)
+    shutil.rmtree(config.home_state_dir)
 
     if not os.listdir(config.state_dir):
         os.rmdir(config.state_dir)
