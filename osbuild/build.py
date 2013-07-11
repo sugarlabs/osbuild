@@ -100,7 +100,10 @@ def _clean_module(module):
     print("* Cleaning %s" % module.name)
 
     git_module = git.get_module(module)
-    return git_module.clean()
+    if os.path.exists(module.get_source_dir()):
+        return git_module.clean()
+    else:
+        return True
 
 
 def clean_one(module_name):
