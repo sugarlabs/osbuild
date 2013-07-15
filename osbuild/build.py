@@ -85,13 +85,9 @@ def build():
 
     print("\n= Building =\n")
 
-    _ccache_reset()
-
     for module in to_build:
         if not _build_module(module):
             return False
-
-    _ccache_print_stats()
 
     return True
 
@@ -123,15 +119,6 @@ def clean(continue_on_error=True):
             return False
 
     return True
-
-
-def _ccache_reset():
-    subprocess.check_call(["ccache", "-z"], stdout=utils.devnull)
-
-
-def _ccache_print_stats():
-    print("\n= ccache statistics =\n")
-    subprocess.check_call(["ccache", "-s"])
 
 
 def _unlink_libtool_files():
