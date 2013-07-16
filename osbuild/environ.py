@@ -81,6 +81,8 @@ def setup_variables():
     os.environ["GCONF_SCHEMA_INSTALL_SOURCE"] = \
         "xml:merged:" + os.path.join(_get_gconf_dir(), "gconf.xml.defaults")
 
+    os.environ["SUGAR_RUNNER_HOME_DIR"] = config.home_dir
+
 
 def setup_gconf():
     gconf_dir = _get_gconf_dir()
