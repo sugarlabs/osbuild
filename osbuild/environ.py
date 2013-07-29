@@ -115,4 +115,4 @@ def _get_gconf_path_dir():
 
 
 def _get_gconf_path():
-    return os.path.join(_get_gconf_path_dir(), "path.jhbuild")
+    return os.path.join(_get_gconf_path_dir(), "path")
