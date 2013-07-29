@@ -35,10 +35,7 @@ def run_build():
 
 def setup(config_args):
     config.setup(**config_args)
-
     environ.setup_variables()
-    environ.setup_gconf()
-
     return True
 
 
