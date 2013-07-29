@@ -48,5 +48,4 @@ setup(name="osbuild",
       cmdclass={"lint": LintCommand},
       install_requires=["plog==0.16",
                         "json-format==0.1",
-                        "pygments==1.6"],
-      ext_modules=[Extension("osbuild.ext", ["src/ext.c"])])
+                        "pygments==1.6"])
