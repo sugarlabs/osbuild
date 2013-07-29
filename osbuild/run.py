@@ -27,6 +27,9 @@ def run(cmd):
 
     prefs = config.get_prefs()
 
+    if "profile" in prefs:
+        os.environ["SUGAR_PROFILE"] = prefs["profile"]
+
     if "resolution" in prefs:
         args.extend(["--resolution", prefs["resolution"]])
 
