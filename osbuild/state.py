@@ -18,7 +18,6 @@ import json
 import shutil
 
 from osbuild import config
-from osbuild import ext
 
 _BUILT_MODULES = "builtmodules"
 _PULLED_MODULES = "pulledmodules"
@@ -26,10 +25,15 @@ _FULL_BUILD = "fullbuild"
 _SYSTEM_CHECK = "syscheck"
 
 
+def _compute_sourcestamp(path):
+    import sourcestamp
+    return sourcestamp.compute(path)
+
+
 def built_module_touch(module):
     built_modules = _load_state(_BUILT_MODULES, {})
 
-    source_stamp = ext.compute_sourcestamp(module.get_source_dir())
+    source_stamp = _compute_sourcestamp(module.get_source_dir())
     built_modules[module.name] = {"source_stamp": source_stamp}
 
     _save_state(_BUILT_MODULES, built_modules)
@@ -60,7 +64,7 @@ def built_module_is_unchanged(module):
         return False
 
     old_source_stamp = built_module["source_stamp"]
-    new_source_stamp = ext.compute_sourcestamp(module.get_source_dir())
+    new_source_stamp = _compute_sourcestamp(module.get_source_dir())
 
     return old_source_stamp == new_source_stamp
 
@@ -70,7 +74,7 @@ def system_check_is_unchanged():
     if not system_check or not "config_stamp" in system_check:
         return False
 
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
+    config_stamp = _compute_sourcestamp(config.config_dir)
 
     return system_check["config_stamp"] == config_stamp
 
@@ -78,7 +82,7 @@ def system_check_is_unchanged():
 def system_check_touch():
     system_check = _load_state(_SYSTEM_CHECK, {})
 
-    config_stamp = ext.compute_sourcestamp(config.config_dir)
+    config_stamp = _compute_sourcestamp(config.config_dir)
     system_check["config_stamp"] = config_stamp
 
     _save_state(_SYSTEM_CHECK, system_check)
