@@ -138,7 +138,7 @@ def get_prefs():
         return _cached_prefs
 
     # Defaults
-    prefs = {"profile": "default"}
+    prefs = {}
 
     if _prefs_path is not None:
         try:
