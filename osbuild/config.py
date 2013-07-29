@@ -29,7 +29,6 @@ etc_dir = None
 libexec_dir = None
 package_files = None
 system_lib_dirs = None
-home_dir = None
 state_dir = None
 home_state_dir = None
 build_state_dir = None
@@ -170,10 +169,6 @@ def _setup_state_dir(path):
     global home_state_dir
     home_state_dir = os.path.join(state_dir, "home")
     utils.ensure_dir(home_state_dir)
-
-    global home_dir
-    home_dir = os.path.join(home_state_dir, get_prefs()["profile"])
-    utils.ensure_dir(home_dir)
 
 
 def _setup_install_dir(path):
