@@ -24,9 +24,6 @@ from osbuild import shell
 
 
 def run_build():
-    if not build.pull(lazy=True):
-        return False
-
     if not build.build():
         return False
 
