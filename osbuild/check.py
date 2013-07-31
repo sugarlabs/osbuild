@@ -82,7 +82,8 @@ def _volo_checker(module):
     test_dir = os.path.join(source_dir, "test")
     if os.path.exists(test_dir):
         os.chdir(test_dir)
-        command.run(["karma", "start", "--single-run"])
+        command.run(["karma", "start", "--single-run", "--no-colors",
+                     "--log-level debug"])
 
     for root, dirs, files in os.walk(module.get_source_dir()):
         if root == source_dir and "lib" in dirs:

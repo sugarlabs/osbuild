@@ -81,6 +81,18 @@ def setup_variables():
     os.environ["GCONF_SCHEMA_INSTALL_SOURCE"] = \
         "xml:merged:" + os.path.join(_get_gconf_dir(), "gconf.xml.defaults")
 
+    cache_home_dir = os.path.join(config.home_dir, "cache")
+    utils.ensure_dir(cache_home_dir)
+    os.environ["XDG_CACHE_HOME"] = cache_home_dir
+
+    data_home_dir = os.path.join(config.home_dir, "data")
+    utils.ensure_dir(data_home_dir)
+    os.environ["XDG_DATA_HOME"] = data_home_dir
+
+    config_home_dir = os.path.join(config.home_dir, "config")
+    utils.ensure_dir(config_home_dir)
+    os.environ["XDG_CONFIG_HOME"] = config_home_dir
+
 
 def setup_gconf():
     gconf_dir = _get_gconf_dir()
@@ -115,4 +127,4 @@ def _get_gconf_path_dir():
 
 
 def _get_gconf_path():
-    return os.path.join(_get_gconf_path_dir(), "path.jhbuild")
+    return os.path.join(_get_gconf_path_dir(), "path")

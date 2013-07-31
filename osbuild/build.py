@@ -45,12 +45,8 @@ def pull_one(module_name):
     return False
 
 
-def pull(revisions={}, lazy=False):
-    to_pull = []
-    for module in config.load_modules():
-        git_module = git.get_module(module)
-        if not lazy or not os.path.exists(git_module.local):
-            to_pull.append(module)
+def pull(revisions={}):
+    to_pull = config.load_modules()
 
     if to_pull:
         print("\n= Pulling =\n")
@@ -85,13 +81,9 @@ def build():
 
     print("\n= Building =\n")
 
-    _ccache_reset()
-
     for module in to_build:
         if not _build_module(module):
             return False
-
-    _ccache_print_stats()
 
     return True
 
@@ -100,7 +92,10 @@ def _clean_module(module):
     print("* Cleaning %s" % module.name)
 
     git_module = git.get_module(module)
-    return git_module.clean()
+    if os.path.exists(module.get_source_dir()):
+        return git_module.clean()
+    else:
+        return True
 
 
 def clean_one(module_name):
@@ -120,15 +115,6 @@ def clean(continue_on_error=True):
             return False
 
     return True
-
-
-def _ccache_reset():
-    subprocess.check_call(["ccache", "-z"], stdout=utils.devnull)
-
-
-def _ccache_print_stats():
-    print("\n= ccache statistics =\n")
-    subprocess.check_call(["ccache", "-s"])
 
 
 def _unlink_libtool_files():

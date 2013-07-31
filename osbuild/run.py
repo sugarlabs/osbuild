@@ -23,7 +23,7 @@ from osbuild import command
 
 
 def run(cmd):
-    args = [cmd, "--home-dir", config.home_dir]
+    args = [cmd]
 
     prefs = config.get_prefs()
 

@@ -39,12 +39,3 @@ def run(args, retry=0, watch_log=None):
                 raise subprocess.CalledProcessError(result, args)
         else:
             break
-
-
-def run_with_sudo(args):
-    args_with_sudo = ["sudo"]
-    args_with_sudo.extend(args)
-
-    print(" ".join(args_with_sudo))
-
-    subprocess.check_call(args_with_sudo)

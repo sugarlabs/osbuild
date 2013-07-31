@@ -37,7 +37,7 @@ class LintCommand(Command):
 
 
 setup(name="osbuild",
-      packages=["osbuild", "osbuild.plugins", "osbuild"],
+      packages=["osbuild"],
       version="0.33",
       description="Pull, build and test multiple source modules",
       author="Daniel Narvaez",
@@ -46,5 +46,6 @@ setup(name="osbuild",
       classifiers=classifiers,
       test_suite="osbuild.tests",
       cmdclass={"lint": LintCommand},
-      install_requires=["plog==0.16", "json-format==0.1"],
-      ext_modules=[Extension("osbuild.ext", ["src/ext.c"])])
+      install_requires=["plog==0.16",
+                        "json-format==0.1",
+                        "pygments==1.6"])

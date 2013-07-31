@@ -15,55 +15,24 @@
 
 import argparse
 import json
-import pkgutil
-import imp
 
 from osbuild import config
 from osbuild import environ
-from osbuild import plugins
-from osbuild import system
 from osbuild import build
-from osbuild import state
 from osbuild import clean
 from osbuild import shell
 
 
-def run_build(clean_all=False):
-    if clean_all or state.full_build_is_required():
-        if not clean.clean(build_only=True, continue_on_error=False):
-            print("! Clean failed, cannot continue.")
-            return False
-
-        environ.setup_gconf()
-
-    state.full_build_touch()
-
-    if not build.pull(lazy=True):
-        return False
-
+def run_build():
     if not build.build():
         return False
 
     return True
 
 
-def load_plugins():
-    for loader, name, ispkg in pkgutil.iter_modules(plugins.__path__):
-        f, filename, desc = imp.find_module(name, plugins.__path__)
-        imp.load_module(name, f, filename, desc)
-
-
-def setup(config_args, check_args={}):
-    load_plugins()
-
+def setup(config_args):
     config.setup(**config_args)
-
-    if not system.check(**check_args):
-        return False
-
     environ.setup_variables()
-    environ.setup_gconf()
-
     return True
 
 
@@ -113,13 +82,11 @@ def cmd_build():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
                         help="name of the module to build")
-    parser.add_argument("--clean-all", action="store_true",
-                        help="clean everything before building")
     args = parser.parse_args()
 
     if args.module:
         result = build.build_one(args.module)
     else:
-        result = run_build(clean_all=args.clean_all)
+        result = run_build()
 
     return result

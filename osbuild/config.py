@@ -16,7 +16,6 @@
 import json
 import os
 
-from osbuild import distro
 from osbuild import utils
 
 interactive = True
@@ -30,9 +29,9 @@ etc_dir = None
 libexec_dir = None
 package_files = None
 system_lib_dirs = None
-home_dir = None
 state_dir = None
 home_state_dir = None
+home_dir = None
 build_state_dir = None
 git_user_name = None
 git_email = None
@@ -105,7 +104,7 @@ def setup(**kwargs):
     global _dist_dir
     _dist_dir = kwargs["dist_dir"]
 
-    _setup_state_dir(kwargs["state_dir"])
+    _setup_state_dir(kwargs["state_dir"], kwargs["profile_name"])
     _setup_install_dir(kwargs["install_dir"])
 
     if "git_user_name" in kwargs:
@@ -140,7 +139,7 @@ def get_prefs():
         return _cached_prefs
 
     # Defaults
-    prefs = {"profile": "default"}
+    prefs = {}
 
     if _prefs_path is not None:
         try:
@@ -154,73 +153,12 @@ def get_prefs():
     return prefs
 
 
-def get_full_build():
-    with open(os.path.join(config_dir, "config.json")) as f:
-        config = json.load(f)
-
-    return config["full_build"]
-
-
-def load_packages():
-    with open(os.path.join(config_dir, "packages.json")) as f:
-        return json.load(f)
-
-
-def load_prerequisites():
-    with open(os.path.join(config_dir, "prerequisites.json")) as f:
-        return json.load(f)
-
-
-def load_dependencies(should_filter=True):
-    with open(os.path.join(config_dir, "dependencies.json")) as f:
-        info = json.load(f)
-
-        if should_filter:
-            return filter(_filter_if, info)
-        else:
-            return info
-
-
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
-        return [Module(info) for info in filter(_filter_if, json.load(f))]
+        return [Module(info) for info in json.load(f)]
 
 
-def check():
-    dep_names = []
-    for dep_info in load_dependencies(should_filter=False):
-        dep_names.append(dep_info["name"])
-
-    for dep_info in load_prerequisites():
-        dep_names.append(dep_info["name"])
-
-    missing_packages = dep_names[:]
-    unused_packages = []
-
-    for name in load_packages().keys():
-        if name == "base-system":
-            continue
-
-        if name in missing_packages:
-            missing_packages.remove(name)
-        else:
-            unused_packages.append(name)
-
-    return {"missing_packages": missing_packages,
-            "unused_packages": unused_packages}
-
-
-def _filter_if(item):
-    if "if" not in item:
-        return True
-
-    distro_info = distro.get_distro_info()
-    globals = {"distro": "%s-%s" % (distro_info.name, distro_info.version)}
-
-    return eval(item["if"], globals)
-
-
-def _setup_state_dir(path):
+def _setup_state_dir(path, profile_name):
     global state_dir
     state_dir = path
     utils.ensure_dir(state_dir)
@@ -234,7 +172,7 @@ def _setup_state_dir(path):
     utils.ensure_dir(home_state_dir)
 
     global home_dir
-    home_dir = os.path.join(home_state_dir, get_prefs()["profile"])
+    home_dir = os.path.join(home_state_dir, profile_name)
     utils.ensure_dir(home_dir)
 
 
@@ -254,15 +192,5 @@ def _setup_install_dir(path):
     bin_dir = os.path.join(install_dir, "bin")
     etc_dir = os.path.join(install_dir, "etc")
     libexec_dir = os.path.join(install_dir, "libexec")
-
-    distro_info = distro.get_distro_info()
-
-    relative_lib_dir = distro_info.lib_dir
-    if relative_lib_dir is None:
-        relative_lib_dir = "lib"
-
-    lib_dir = os.path.join(install_dir, relative_lib_dir)
-
-    system_lib_dirs = ["/usr/lib"]
-    if distro_info.lib_dir is not None:
-        system_lib_dirs.append(os.path.join("/usr", distro_info.lib_dir))
+    lib_dir = os.path.join(install_dir, "lib64")
+    system_lib_dirs = ["/usr/lib64"]
