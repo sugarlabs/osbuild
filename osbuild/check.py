@@ -112,12 +112,6 @@ def _volo_checker(module):
                         "--indent-size", "2", path]
                 if _diff_output(subprocess.check_output(args), path):
                     return False
-            elif f.endswith(".html"):
-                logging.info("Running js-beautify on %s" % path)
-                args = ["js-beautify", "--type", "html",
-                        "--indent-size", "2", path]
-                if _diff_output(subprocess.check_output(args), path):
-                    return False
 
     return True
 
