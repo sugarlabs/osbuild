@@ -30,6 +30,11 @@ def start():
              export PS1="[osbuild \W]$ "
              """
 
+    try:
+        os.makedirs(config.etc_dir)
+    except OSError:
+        pass
+
     bashrc_path = os.path.join(config.etc_dir, "bashrc")
 
     with open(bashrc_path, "w") as f:
