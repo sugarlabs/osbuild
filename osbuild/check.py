@@ -111,7 +111,7 @@ def _volo_checker(module):
                 logging.info("Running recess on %s" % path)
 
                 args = ["recess", "-noIDs", "false", "-noOverqualifying",
-                        "false", path]
+                        "false", "--stripColors", path]
                 output = subprocess.check_output(args)
                 logging.info(output)
 
