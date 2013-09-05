@@ -102,16 +102,14 @@ def _volo_checker(module):
                 args = ["js-beautify", "--good-stuff", path]
                 if _diff_output(subprocess.check_output(args), path):
                     return False
-            elif f.endswith(".css"):
-                less_name = f.replace(".css", ".less")
-                if os.path.exists(os.path.join(root, less_name)):
-                    continue
+            elif f.endswith(".css") or f.endswith(".less"):
+                if f.endswith(".css"):
+                    less_name = f.replace(".css", ".less")
+                    if os.path.exists(os.path.join(root, less_name)):
+                        continue
 
-                logging.info("Running js-beautify on %s" % path)
-                args = ["js-beautify", "--type", "css",
-                        "--indent-size", "2", path]
-                if _diff_output(subprocess.check_output(args), path):
-                    return False
+                logging.info("Running recess on %s" % path)
+                return subprocess.call(["recess", path]) == 0
 
     return True
 
