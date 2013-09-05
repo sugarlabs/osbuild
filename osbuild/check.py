@@ -108,9 +108,9 @@ def _volo_checker(module):
                     if os.path.exists(os.path.join(root, less_name)):
                         continue
 
-                try:
-                    command.run(["recess", path])
-                except subprocess.CalledProcessError:
+                logging.info("Running recess on %s" % path)
+                output = subprocess.check_output(["recess", path])
+                if "STATUS: Perfect!" not in output:
                     return False
 
     return True
