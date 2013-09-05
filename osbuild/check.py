@@ -113,6 +113,7 @@ def _volo_checker(module):
                 args = ["recess", "-noIDs", "false", "-noOverqualifying",
                         "false", path]
                 output = subprocess.check_output(args)
+                logging.info(output)
 
                 if "STATUS: Perfect!" not in output:
                     return False
