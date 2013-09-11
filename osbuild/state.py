@@ -84,9 +84,6 @@ def clean():
 
     shutil.rmtree(config.home_state_dir)
 
-    if not os.listdir(config.state_dir):
-        os.rmdir(config.state_dir)
-
 
 def _get_built_module(module):
     built_modules = _load_state(_BUILT_MODULES, {})

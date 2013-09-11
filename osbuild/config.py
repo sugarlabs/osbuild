@@ -29,10 +29,9 @@ etc_dir = None
 libexec_dir = None
 package_files = None
 system_lib_dirs = None
-state_dir = None
 home_state_dir = None
-home_dir = None
 build_state_dir = None
+home_dir = None
 git_user_name = None
 git_email = None
 
@@ -104,7 +103,18 @@ def setup(**kwargs):
     global _dist_dir
     _dist_dir = kwargs["dist_dir"]
 
-    _setup_state_dir(kwargs["state_dir"], kwargs["profile_name"])
+    global build_state_dir
+    build_state_dir = kwargs["build_state_dir"]
+    utils.ensure_dir(build_state_dir)
+
+    global home_state_dir
+    home_state_dir = kwargs["home_state_dir"]
+    utils.ensure_dir(home_state_dir)
+
+    global home_dir
+    home_dir = os.path.join(home_state_dir, kwargs["profile_name"])
+    utils.ensure_dir(home_dir)
+
     _setup_install_dir(kwargs["install_dir"])
 
     if "git_user_name" in kwargs:
@@ -156,24 +166,6 @@ def get_prefs():
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
         return [Module(info) for info in json.load(f)]
-
-
-def _setup_state_dir(path, profile_name):
-    global state_dir
-    state_dir = path
-    utils.ensure_dir(state_dir)
-
-    global build_state_dir
-    build_state_dir = os.path.join(state_dir, "build")
-    utils.ensure_dir(build_state_dir)
-
-    global home_state_dir
-    home_state_dir = os.path.join(state_dir, "home")
-    utils.ensure_dir(home_state_dir)
-
-    global home_dir
-    home_dir = os.path.join(home_state_dir, profile_name)
-    utils.ensure_dir(home_dir)
 
 
 def _setup_install_dir(path):
