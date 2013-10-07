@@ -107,6 +107,10 @@ def _volo_checker(module):
                     less_name = f.replace(".css", ".less")
                     if os.path.exists(os.path.join(root, less_name)):
                         continue
+                elif f.endswith(".less"):
+                    with open(f) as less_file:
+                        if less_file.readline() == "// recess: ignore":
+                            continue
 
                 logging.info("Running recess on %s" % path)
 
