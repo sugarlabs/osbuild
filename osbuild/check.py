@@ -108,7 +108,8 @@ def _volo_checker(module):
                         continue
                 elif f.endswith(".less"):
                     with open(path) as less_file:
-                        if less_file.readline() == "// recess: ignore":
+                        line = less_file.readline()
+                        if line.startswith("// recess: ignore"):
                             continue
 
                 logging.info("Running recess on %s" % path)
