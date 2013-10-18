@@ -92,7 +92,6 @@ def _volo_checker(module):
             path = os.path.join(root, f)
 
             if f.endswith(".js"):
-
                 try:
                     command.run(["jshint", path])
                 except subprocess.CalledProcessError:
@@ -108,7 +107,7 @@ def _volo_checker(module):
                     if os.path.exists(os.path.join(root, less_name)):
                         continue
                 elif f.endswith(".less"):
-                    with open(f) as less_file:
+                    with open(path) as less_file:
                         if less_file.readline() == "// recess: ignore":
                             continue
 
