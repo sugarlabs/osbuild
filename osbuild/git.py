@@ -128,31 +128,6 @@ class Module:
         command.run(["git", "checkout", revision])
 
     @_chdir
-    def describe(self):
-        return subprocess.check_output(["git", "describe"]).strip()
-
-    @_chdir
-    def get_annotation(self, tag):
-        # FIXME this is fragile, there must be a better way
-
-        show = subprocess.check_output(["git", "show", tag])
-
-        annotation = []
-        for line in show.split("\n"):
-            ignore = False
-            for start in ["tag ", "Tagger: ", "Date: "]:
-                if line.startswith(start):
-                    ignore = True
-
-            if line.startswith("commit "):
-                break
-
-            if not ignore:
-                annotation.append(line)
-
-        return "\n".join(annotation)
-
-    @_chdir
     def clean(self):
         result = True
 
