@@ -102,20 +102,10 @@ class Module:
             self._clone()
             return
 
-        orig_cwd = os.getcwd()
         os.chdir(self.local)
 
         if revision is None:
-            if self.tag and self._head_has_tag(self.tag):
-                os.chdir(orig_cwd)
-                return
-
             revision = self.tag
-
-        commit_id = self._get_commit_id()
-        if revision == commit_id:
-            os.chdir(orig_cwd)
-            return
 
         command.run(["git", "remote", "set-url", "origin",
                      self._remotes["origin"]])
@@ -127,8 +117,6 @@ class Module:
             command.run(["git", "checkout", self._branch])
             command.run(["git", "merge", "--ff-only",
                          "origin/%s" % self._branch])
-
-        os.chdir(orig_cwd)
 
     @_chdir
     def checkout(self, revision=None):
@@ -226,13 +214,6 @@ class Module:
                     break
 
         return result
-
-    def _get_commit_id(self):
-        return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-
-    def _head_has_tag(self, tag):
-        tags = subprocess.check_output(["git", "tag", "--points-at", "HEAD"])
-        return tag in tags.split("\n")
 
 
 def get_module(module):
