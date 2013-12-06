@@ -18,6 +18,7 @@ import os
 import multiprocessing
 import shutil
 import subprocess
+import logging
 
 from osbuild import command
 from osbuild import config
@@ -134,6 +135,8 @@ def _pull_module(module, revision=None):
         git_module.update(revision)
     except subprocess.CalledProcessError:
         return False
+
+    logging.info("{0} HEAD: {1}".format(module.name, git_module.get_head()))
 
     state.pulled_module_touch(module)
 
