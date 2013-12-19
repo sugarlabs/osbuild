@@ -115,8 +115,6 @@ def setup(**kwargs):
     home_dir = os.path.join(home_state_dir, kwargs["profile_name"])
     utils.ensure_dir(home_dir)
 
-    _setup_install_dir(kwargs["install_dir"])
-
     if "git_user_name" in kwargs:
         global git_user_name
         git_user_name = kwargs["git_user_name"]
