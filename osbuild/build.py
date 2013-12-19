@@ -158,6 +158,12 @@ def _build_distutils(module):
 _builders["distutils"] = _build_distutils
 
 
+def _build_volo(module):
+    pass
+
+_builders["volo"] = _build_volo
+
+
 def _build_module(module):
     print("* Building %s" % module.name)
 
