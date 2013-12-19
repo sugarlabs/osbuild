@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import fnmatch
 import os
 import multiprocessing
 import shutil
@@ -108,22 +107,11 @@ def clean_one(module_name):
 
 
 def clean(continue_on_error=True):
-    print("* Removing install directory")
-    shutil.rmtree(config.install_dir, ignore_errors=True)
-
     for module in config.load_modules():
         if not _clean_module(module) and not continue_on_error:
             return False
 
     return True
-
-
-def _unlink_libtool_files():
-    def func(arg, dirname, fnames):
-        for fname in fnmatch.filter(fnames, "*.la"):
-            os.unlink(os.path.join(dirname, fname))
-
-    os.path.walk(config.lib_dir, func, None)
 
 
 def _pull_module(module, revision=None):
@@ -143,15 +131,7 @@ def _pull_module(module, revision=None):
     return True
 
 
-def _eval_option(option):
-    return eval(option, {"prefix": config.install_dir})
-
-
 def _build_autotools(module):
-    # Workaround for aclocal 1.11 (fixed in 1.12)
-    aclocal_path = os.path.join(config.share_dir, "aclocal")
-    utils.ensure_dir(aclocal_path)
-
     makefile_path = os.path.join(module.get_source_dir(), module.makefile_name)
 
     if not os.path.exists(makefile_path):
@@ -159,24 +139,15 @@ def _build_autotools(module):
         if not os.path.exists(configure):
             configure = os.path.join(module.get_source_dir(), "configure")
 
-        args = [configure, "--prefix", config.install_dir]
-
-        if not module.no_libdir:
-            args.extend(["--libdir", config.lib_dir])
-
+        args = [configure, "--prefix=/usr"]
         args.extend(module.options)
-
-        for option in module.options_evaluated:
-            args.append(_eval_option(option))
-
         command.run(args)
 
     jobs = multiprocessing.cpu_count() * 2
 
     command.run(["make", "-j", "%d" % jobs])
-    command.run(["make", "install"])
+    command.run(["sudo", "make", "install"])
 
-    _unlink_libtool_files()
 
 _builders["autotools"] = _build_autotools
 
@@ -191,23 +162,6 @@ def _build_distutils(module):
                  config.install_dir])
 
 _builders["distutils"] = _build_distutils
-
-
-def _build_volo(module):
-    pass
-
-_builders["volo"] = _build_volo
-
-
-def _build_npm(module):
-    if os.path.exists(os.path.join(module.get_source_dir(),
-                      "Gruntfile.coffee")):
-        command.run(["npm", "install", "grunt"])
-        command.run(["grunt", "build"])
-
-    command.run(["npm", "install", "-g", "--prefix", config.install_dir])
-
-_builders["npm"] = _build_npm
 
 
 def _build_module(module):

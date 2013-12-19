@@ -21,14 +21,7 @@ from osbuild import utils
 interactive = True
 config_dir = None
 docs_dir = None
-install_dir = None
-lib_dir = None
-share_dir = None
-bin_dir = None
-etc_dir = None
-libexec_dir = None
 package_files = None
-system_lib_dirs = None
 home_state_dir = None
 build_state_dir = None
 home_dir = None
@@ -115,8 +108,6 @@ def setup(**kwargs):
     home_dir = os.path.join(home_state_dir, kwargs["profile_name"])
     utils.ensure_dir(home_dir)
 
-    _setup_install_dir(kwargs["install_dir"])
-
     if "git_user_name" in kwargs:
         global git_user_name
         git_user_name = kwargs["git_user_name"]
@@ -166,23 +157,3 @@ def get_prefs():
 def load_modules():
     with open(os.path.join(config_dir, "modules.json")) as f:
         return [Module(info) for info in json.load(f)]
-
-
-def _setup_install_dir(path):
-    global system_lib_dirs
-    global install_dir
-    global share_dir
-    global bin_dir
-    global etc_dir
-    global lib_dir
-    global libexec_dir
-
-    install_dir = path
-    utils.ensure_dir(install_dir)
-
-    share_dir = os.path.join(install_dir, "share")
-    bin_dir = os.path.join(install_dir, "bin")
-    etc_dir = os.path.join(install_dir, "etc")
-    libexec_dir = os.path.join(install_dir, "libexec")
-    lib_dir = os.path.join(install_dir, "lib64")
-    system_lib_dirs = ["/usr/lib64"]

@@ -14,32 +14,9 @@
 # limitations under the License.
 
 import os
-import textwrap
-
-from osbuild import config
 
 
 def start():
     os.environ["OSBUILD_SHELL"] = "yes"
-
-    script = """
-             if [ -f ~/.bashrc ]; then
-                . ~/.bashrc
-             fi
-
-             export PS1="[osbuild \W]$ "
-             """
-
-    try:
-        os.makedirs(config.etc_dir)
-    except OSError:
-        pass
-
-    bashrc_path = os.path.join(config.etc_dir, "bashrc")
-
-    with open(bashrc_path, "w") as f:
-        f.write(textwrap.dedent(script))
-
-    args = ["/bin/bash", "--rcfile", bashrc_path]
-
+    args = ["/bin/bash"]
     os.execlp(args[0], *args)

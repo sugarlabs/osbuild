@@ -17,7 +17,6 @@ import argparse
 import json
 
 from osbuild import config
-from osbuild import environ
 from osbuild import build
 from osbuild import clean
 from osbuild import shell
@@ -32,7 +31,6 @@ def run_build():
 
 def setup(config_args):
     config.setup(**config_args)
-    environ.setup_variables()
     return True
 
 
