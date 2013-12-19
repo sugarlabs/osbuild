@@ -153,7 +153,7 @@ _builders["autotools"] = _build_autotools
 
 def _build_distutils(module):
     setup = os.path.join(module.get_source_dir(), "setup.py")
-    command.run(["python", setup, "install"])
+    command.run(["sudo", "python", setup, "install"])
 
 _builders["distutils"] = _build_distutils
 
