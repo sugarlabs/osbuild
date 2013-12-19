@@ -22,7 +22,6 @@ import logging
 from osbuild import command
 from osbuild import config
 from osbuild import state
-from osbuild import utils
 from osbuild import git
 
 _builders = {}
@@ -153,13 +152,8 @@ _builders["autotools"] = _build_autotools
 
 
 def _build_distutils(module):
-    site_packages = os.path.join(config.install_dir, "lib", "python2.7",
-                                 "site-packages")
-    utils.ensure_dir(site_packages)
-
     setup = os.path.join(module.get_source_dir(), "setup.py")
-    command.run(["python", setup, "install", "--prefix",
-                 config.install_dir])
+    command.run(["python", setup, "install"])
 
 _builders["distutils"] = _build_distutils
 
