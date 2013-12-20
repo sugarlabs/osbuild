@@ -44,7 +44,7 @@ def cmd_clean():
     args = parser.parse_args()
 
     if args.build_state:
-        state.clean(state.BUILT_MODULES)
+        state.clean([state.BUILT_MODULES])
     elif args.module:
         if not build.clean_one(args.module):
             return False
