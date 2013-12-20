@@ -19,9 +19,8 @@ import shutil
 
 from osbuild import config
 
-_BUILT_MODULES = "builtmodules"
-_PULLED_MODULES = "pulledmodules"
-_SYSTEM_CHECK = "syscheck"
+BUILT_MODULES = "builtmodules"
+PULLED_MODULES = "pulledmodules"
 
 
 def _compute_sourcestamp(path):
@@ -30,20 +29,20 @@ def _compute_sourcestamp(path):
 
 
 def built_module_touch(module):
-    built_modules = _load_state(_BUILT_MODULES, {})
+    built_modules = _load_state(BUILT_MODULES, {})
 
     source_stamp = _compute_sourcestamp(module.get_source_dir())
     built_modules[module.name] = {"source_stamp": source_stamp}
 
-    _save_state(_BUILT_MODULES, built_modules)
+    _save_state(BUILT_MODULES, built_modules)
 
 
 def pulled_module_touch(module):
-    pulled_modules = _load_state(_PULLED_MODULES, {})
+    pulled_modules = _load_state(PULLED_MODULES, {})
 
     pulled_modules[module.name] = {"clean_stamp": module.clean_stamp}
 
-    _save_state(_PULLED_MODULES, pulled_modules)
+    _save_state(PULLED_MODULES, pulled_modules)
 
 
 def pulled_module_should_clean(module):
@@ -68,10 +67,11 @@ def built_module_is_unchanged(module):
     return old_source_stamp == new_source_stamp
 
 
-def clean():
+def clean(names=None):
     print("* Deleting state")
 
-    names = [_BUILT_MODULES, _PULLED_MODULES]
+    if names is None:
+        names = [BUILT_MODULES, PULLED_MODULES]
 
     for name in names:
         try:
@@ -86,12 +86,12 @@ def clean():
 
 
 def _get_built_module(module):
-    built_modules = _load_state(_BUILT_MODULES, {})
+    built_modules = _load_state(BUILT_MODULES, {})
     return built_modules.get(module.name, None)
 
 
 def _get_pulled_module(module):
-    pulled_modules = _load_state(_PULLED_MODULES, {})
+    pulled_modules = _load_state(PULLED_MODULES, {})
     return pulled_modules.get(module.name, None)
 
 

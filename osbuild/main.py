@@ -19,6 +19,7 @@ import json
 from osbuild import config
 from osbuild import build
 from osbuild import clean
+from osbuild import state
 from osbuild import shell
 
 
@@ -38,9 +39,13 @@ def cmd_clean():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
                         help="name of the module to clean")
+    parser.add_argument("--build-state", action="store_true",
+                        help="clean the build state only")
     args = parser.parse_args()
 
-    if args.module:
+    if args.build_state:
+        state.clean(state.BUILT_MODULES)
+    elif args.module:
         if not build.clean_one(args.module):
             return False
     else:
