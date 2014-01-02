@@ -34,6 +34,7 @@ build_state_dir = None
 home_dir = None
 git_user_name = None
 git_email = None
+karma_browser = None
 
 _source_dir = None
 _dist_dir = None
@@ -128,6 +129,10 @@ def setup(**kwargs):
     if "interactive" in kwargs:
         global interactive
         interactive = kwargs["interactive"]
+
+    if "karma_browser" in kwargs:
+        global karma_browser_path
+        karma_browser_path = os.path.join(bin_dir, karma_browser)
 
 
 def get_dist_dir():
