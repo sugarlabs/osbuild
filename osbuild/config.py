@@ -131,6 +131,7 @@ def setup(**kwargs):
         interactive = kwargs["interactive"]
 
     if "karma_browser" in kwargs:
+        global bin_dir
         global karma_browser_path
         karma_browser_path = os.path.join(bin_dir, karma_browser)
 
