@@ -187,7 +187,7 @@ def _build_distutils(module):
     utils.ensure_dir(site_packages)
 
     setup = os.path.join(module.get_source_dir(), "setup.py")
-    command.run(["python", setup, "install", "--prefix",
+    command.run(["python2.7", setup, "install", "--prefix",
                  config.install_dir])
 
 _builders["distutils"] = _build_distutils
