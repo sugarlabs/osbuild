@@ -97,15 +97,15 @@ class Module:
     def exists(self):
         return os.path.exists(os.path.join(self.local, ".git"))
 
-    def update(self, revision=None):
+    def update(self, source={}):
         if not self.exists():
             self._clone()
             return
 
         os.chdir(self.local)
 
-        if revision is None:
-            revision = self.tag
+        remote = source.get("repository", self._remotes["origin"])
+        revision = source.get("revision", self.tag)
 
         command.run(["git", "remote", "set-url", "origin",
                      self._remotes["origin"]])

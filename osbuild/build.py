@@ -46,7 +46,7 @@ def pull_one(module_name):
     return False
 
 
-def pull(revisions={}):
+def pull(sources={}):
     to_pull = config.load_modules()
 
     if to_pull:
@@ -64,8 +64,8 @@ def pull(revisions={}):
                 shutil.rmtree(source_dir, ignore_errors=True)
 
     for module in to_pull:
-        revision = revisions.get(module.name, None)
-        if not _pull_module(module, revision):
+        source = sources.get(module.name, None)
+        if not _pull_module(module, source):
             return False
 
     return True
@@ -126,13 +126,13 @@ def _unlink_libtool_files():
     os.path.walk(config.lib_dir, func, None)
 
 
-def _pull_module(module, revision=None):
+def _pull_module(module, source=None):
     print("* Pulling %s" % module.name)
 
     git_module = git.get_module(module)
 
     try:
-        git_module.update(revision)
+        git_module.update(source)
     except subprocess.CalledProcessError:
         return False
 
