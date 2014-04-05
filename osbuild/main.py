@@ -56,19 +56,19 @@ def cmd_pull():
     parser = argparse.ArgumentParser()
     parser.add_argument("module", nargs="?",
                         help="name of the module to pull")
-    parser.add_argument("--revisions",
-                        help="json dict with the revisions to pull")
+    parser.add_argument("--sources",
+                        help="json dict with the sources to pull")
     args = parser.parse_args()
 
     if args.module:
         if not build.pull_one(args.module):
             return False
     else:
-        revisions = {}
-        if args.revisions:
-            revisions = json.loads(args.revisions)
+        sources = {}
+        if args.sources:
+            sources = json.loads(args.sources)
 
-        if not build.pull(revisions):
+        if not build.pull(sources):
             return False
 
     return True
