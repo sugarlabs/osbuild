@@ -107,8 +107,7 @@ class Module:
         remote = source.get("repository", self._remotes["origin"])
         revision = source.get("revision", self.tag)
 
-        command.run(["git", "remote", "set-url", "origin",
-                     self._remotes["origin"]])
+        command.run(["git", "remote", "set-url", "origin", remote])
         command.run(["git", "fetch"], retry=self._retry)
 
         if revision:
