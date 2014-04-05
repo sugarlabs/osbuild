@@ -64,7 +64,7 @@ def pull(sources={}):
                 shutil.rmtree(source_dir, ignore_errors=True)
 
     for module in to_pull:
-        source = sources.get(module.name, None)
+        source = sources.get(module.name, {})
         if not _pull_module(module, source):
             return False
 
