@@ -35,7 +35,12 @@ def run(cmd, **kwargs):
 
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-    command.run(args, **kwargs)
+    try
+        command.run(args, **kwargs)
+    except subprocess.CalledProcessError:
+        return False
+
+    return True
 
 
 def collect_logs(source_path, log_path):
