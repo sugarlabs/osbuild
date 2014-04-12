@@ -35,7 +35,7 @@ def run(cmd, **kwargs):
 
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-    try
+    try:
         command.run(args, **kwargs)
     except subprocess.CalledProcessError:
         return False
