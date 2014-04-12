@@ -17,6 +17,7 @@ import os
 import signal
 import string
 import random
+import subprocess
 
 from osbuild import config
 from osbuild import command
