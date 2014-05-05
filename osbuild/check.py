@@ -50,6 +50,8 @@ def _check_module(module):
     if not module.has_checks:
         return True
 
+    os.chdir(module.get_source_dir())
+
     print("* Checking %s" % module.name)
     return _checkers[module.build_system](module)
 
@@ -81,8 +83,6 @@ _checkers['grunt'] = _grunt_checker
 def _distutils_checker(module):
     result = True
 
-    os.chdir(module.get_source_dir())
-
     command.run(["python", "setup.py", "lint"])
 
     xvfb_proc, orig_display = xvfb.start()
@@ -101,7 +101,7 @@ _checkers['distutils'] = _distutils_checker
 
 def _autotools_checker(module):
     result = True
-    os.chdir(module.get_source_dir())
+
     xvfb_proc, orig_display = xvfb.start()
 
     try:
