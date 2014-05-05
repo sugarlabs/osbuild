@@ -109,8 +109,8 @@ def setup(**kwargs):
     home_dir = os.path.join(home_state_dir, kwargs["profile_name"])
     utils.ensure_dir(home_dir)
 
-    global runner_dir
-    runner_dir = kwargs["runner_dir"]
+    global runner_bin
+    runner_bin = kwargs["runner_bin"]
 
     global runner_variable
     runner_variable = kwargs["runner_variable"]
