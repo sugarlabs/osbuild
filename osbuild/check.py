@@ -69,7 +69,7 @@ def _diff_output(output, path):
 
 
 def _grunt_checker(module):
-    command.run(["grunt", "-nostamp", "-f", "add"], retry=10)
+    command.run(["volo", "-nostamp", "-f", "add"], retry=10)
     command.run(["npm", "install"], retry=10)
     command.run(["grunt"])
 
