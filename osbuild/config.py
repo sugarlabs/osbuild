@@ -58,10 +58,7 @@ class Module:
         self.docs_dir = info.get("docs_dir", self.name)
         self.docs_extras = info.get("docs_extras", None)
         self.dist = info.get("dist", False)
-        self.build_system = info.get("build_system", None)
-
-        if self.build_system is None:
-            self.build_system = self._guess_build_system()
+        self.build_system = self._guess_build_system()
 
     def get_source_dir(self):
         return os.path.join(get_source_dir(), self.name)
