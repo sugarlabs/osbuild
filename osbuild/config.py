@@ -71,11 +71,11 @@ class Module:
     def _guess_build_system(self):
         source_dir = self.get_source_dir()
 
-        package_json = os.path.join(source_dir, "package.json")
-
         if os.path.exists(os.path.join(source_dir, "setup.py")):
             return "distutils"
-        elif os.path.exists(package_json):
+        elif os.path.join(source_dir, "Gruntfile.js"):
+            return "grunt"
+        elif os.path.join(source_dir, "package.json"):
             return "npm"
         elif (os.path.exists(os.path.join(source_dir, "autogen.sh")) or
               os.path.exists(os.path.join(source_dir, "configure"))):
