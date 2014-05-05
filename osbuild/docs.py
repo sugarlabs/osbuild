@@ -39,6 +39,7 @@ def build():
 
             args = ["docker", "-I", "-c", "default", "-o", output_dir]
             args.extend(["--extras", ",".join(extras)])
+            args.extend(["-x", "node_modules"])
 
             command.run(args)
 
