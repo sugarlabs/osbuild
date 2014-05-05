@@ -15,8 +15,6 @@
 
 import os
 import subprocess
-import json
-import logging
 import difflib
 from StringIO import StringIO
 
@@ -71,56 +69,9 @@ def _diff_output(output, path):
 
 
 def _volo_checker(module):
-    source_dir = module.get_source_dir()
-
-    os.chdir(source_dir)
-    with open("package.json") as f:
-        package = json.load(f)
-        if "dependencies" in package["volo"]:
-            command.run(["volo", "-nostamp", "-f", "add"], retry=10)
-
-    test_dir = os.path.join(source_dir, "test")
-    if os.path.exists(test_dir):
-        os.chdir(test_dir)
-        command.run(["karma", "start", "--single-run", "--no-colors",
-                     "--log-level debug"])
-
-    for root, dirs, files in os.walk(module.get_source_dir()):
-        if root == source_dir and "lib" in dirs:
-            dirs.remove("lib")
-        for f in files:
-            path = os.path.join(root, f)
-
-            if f.endswith(".js"):
-                try:
-                    command.run(["jshint", path])
-                except subprocess.CalledProcessError:
-                    return False
-
-                logging.info("Running js-beautify on %s" % path)
-                args = ["js-beautify", "--good-stuff", path]
-                if _diff_output(subprocess.check_output(args), path):
-                    return False
-            elif f.endswith(".css") or f.endswith(".less"):
-                if f.endswith(".css"):
-                    less_name = f.replace(".css", ".less")
-                    if os.path.exists(os.path.join(root, less_name)):
-                        continue
-                elif f.endswith(".less"):
-                    with open(path) as less_file:
-                        line = less_file.readline()
-                        if line.startswith("// recess: ignore"):
-                            continue
-
-                logging.info("Running recess on %s" % path)
-
-                args = ["recess", "-noIDs", "false", "-noOverqualifying",
-                        "false", "--stripColors", path]
-                output = subprocess.check_output(args)
-                logging.info(output)
-
-                if "STATUS: Perfect!" not in output:
-                    return False
+    command.run(["volo", "-nostamp", "-f", "add"], retry=10)
+    command.run(["npm", "install"], retry=10)
+    command.run(["grunt"])
 
     return True
 

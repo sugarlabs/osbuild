@@ -199,17 +199,6 @@ def _build_volo(module):
 _builders["volo"] = _build_volo
 
 
-def _build_npm(module):
-    if os.path.exists(os.path.join(module.get_source_dir(),
-                      "Gruntfile.coffee")):
-        command.run(["npm", "install", "grunt"])
-        command.run(["grunt", "build"])
-
-    command.run(["npm", "install", "-g", "--prefix", config.install_dir])
-
-_builders["npm"] = _build_npm
-
-
 def _build_module(module):
     print("* Building %s" % module.name)
 
