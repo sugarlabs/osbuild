@@ -200,6 +200,12 @@ def _build_grunt(module):
 _builders["grunt"] = _build_grunt
 
 
+def _build_npm(module):
+    command.run(["npm", "install", "-g", "--prefix", config.install_dir])
+
+_builders["npm"] = _build_npm
+
+
 def _build_module(module):
     print("* Building %s" % module.name)
 
