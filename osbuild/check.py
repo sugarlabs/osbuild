@@ -73,7 +73,7 @@ def _diff_output(output, path):
 def _distutils_checker(module):
     result = True
 
-    command.run(["python", "setup.py", "lint"])
+    command.run_with_runner("python setup.py lint")
 
     xvfb_proc, orig_display = xvfb.start()
 
@@ -89,14 +89,20 @@ def _distutils_checker(module):
 _checkers['distutils'] = _distutils_checker
 
 
+def _grunt_checker(module):
+    command.run_with_runner("grunt")
+    return True
+
+_checkers["grunt"] = _grunt_checker
+
+
 def _autotools_checker(module):
     result = True
 
     xvfb_proc, orig_display = xvfb.start()
 
     try:
-        command.run(["dbus-launch", "--exit-with-session",
-                     "make", "test"])
+        command.run_with_runner("make test")
     except subprocess.CalledProcessError:
         result = False
 

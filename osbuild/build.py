@@ -193,11 +193,11 @@ def _build_distutils(module):
 _builders["distutils"] = _build_distutils
 
 
-def _build_volo(module):
+def _build_grunt(module):
     command.run(["volo", "-nostamp", "-f", "add"], retry=10)
     command.run(["npm", "install"], retry=10)
 
-_builders["volo"] = _build_volo
+_builders["grunt"] = _build_grunt
 
 
 def _build_module(module):

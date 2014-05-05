@@ -34,6 +34,8 @@ build_state_dir = None
 home_dir = None
 git_user_name = None
 git_email = None
+runner_bin = None
+runner_variable = None
 
 _source_dir = None
 _dist_dir = None
@@ -71,7 +73,7 @@ class Module:
         if os.path.exists(os.path.join(source_dir, "setup.py")):
             return "distutils"
         elif os.path.exists(package_json):
-            return "volo"
+            return "grunt"
         elif (os.path.exists(os.path.join(source_dir, "autogen.sh")) or
               os.path.exists(os.path.join(source_dir, "configure"))):
             return "autotools"
@@ -106,6 +108,12 @@ def setup(**kwargs):
     global home_dir
     home_dir = os.path.join(home_state_dir, kwargs["profile_name"])
     utils.ensure_dir(home_dir)
+
+    global runner_dir
+    runner_dir = kwargs["runner_dir"]
+
+    global runner_variable
+    runner_variable = kwargs["runner_variable"]
 
     _setup_install_dir(kwargs["install_dir"])
 
