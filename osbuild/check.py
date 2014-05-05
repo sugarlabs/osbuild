@@ -70,16 +70,6 @@ def _diff_output(output, path):
     return False
 
 
-def _grunt_checker(module):
-    command.run(["volo", "-nostamp", "-f", "add"], retry=10)
-    command.run(["npm", "install"], retry=10)
-    command.run(["grunt"])
-
-    return True
-
-_checkers['grunt'] = _grunt_checker
-
-
 def _distutils_checker(module):
     result = True
 
