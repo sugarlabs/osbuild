@@ -73,9 +73,9 @@ class Module:
 
         if os.path.exists(os.path.join(source_dir, "setup.py")):
             return "distutils"
-        elif os.path.join(source_dir, "Gruntfile.js"):
+        elif os.path.exists(os.path.join(source_dir, "Gruntfile.js")):
             return "grunt"
-        elif os.path.join(source_dir, "package.json"):
+        elif os.path.exists(os.path.join(source_dir, "package.json")):
             return "npm"
         elif (os.path.exists(os.path.join(source_dir, "autogen.sh")) or
               os.path.exists(os.path.join(source_dir, "configure"))):
