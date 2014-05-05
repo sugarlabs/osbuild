@@ -44,11 +44,6 @@ def run(cmd, **kwargs):
     return True
 
 
-def run_with_runner(cmd):
-    os.environ[config.runner_variable] = cmd
-    return run(config.runner_bin)
-
-
 def collect_logs(source_path, log_path):
     logs = {}
 

@@ -39,3 +39,8 @@ def run(args, retry=0, watch_log=None):
                 raise subprocess.CalledProcessError(result, args)
         else:
             break
+
+
+def run_with_runner(cmd):
+    os.environ[config.runner_variable] = cmd
+    return run(config.runner_bin)
