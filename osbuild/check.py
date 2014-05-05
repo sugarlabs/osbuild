@@ -14,13 +14,9 @@
 # limitations under the License.
 
 import os
-import subprocess
-import difflib
-from StringIO import StringIO
 
 from osbuild import config
 from osbuild import command
-from osbuild import xvfb
 from osbuild import build
 
 _checkers = {}
@@ -29,9 +25,9 @@ _checkers = {}
 def check_one(module_name):
     for module in config.load_modules():
         if module.name == module_name:
-            return _check_module(module)
+            _check_module(module)
 
-    return False
+    return True
 
 
 def check():
@@ -40,8 +36,7 @@ def check():
 
     modules = config.load_modules()
     for module in modules:
-        if not _check_module(module):
-            return False
+        _check_module(module)
 
     return True
 
@@ -56,58 +51,19 @@ def _check_module(module):
     return _checkers[module.build_system](module)
 
 
-def _diff_output(output, path):
-    with open(path) as f:
-        diff = difflib.unified_diff(f.readlines(),
-                                    StringIO(output).readlines())
-
-        joined = "".join([line for line in diff])
-        if joined:
-            print("\njs-beautify check failed for %s\n\n" % path)
-            print(joined)
-            return True
-
-    return False
-
-
 def _distutils_checker(module):
-    result = True
-
     command.run_with_runner("python setup.py lint")
-
-    xvfb_proc, orig_display = xvfb.start()
-
-    try:
-        command.run(["python", "setup.py", "test"])
-    except subprocess.CalledProcessError:
-        result = False
-
-    xvfb.stop(xvfb_proc, orig_display)
-
-    return result
 
 _checkers['distutils'] = _distutils_checker
 
 
 def _grunt_checker(module):
     command.run_with_runner("grunt")
-    return True
 
 _checkers["grunt"] = _grunt_checker
 
 
 def _autotools_checker(module):
-    result = True
-
-    xvfb_proc, orig_display = xvfb.start()
-
-    try:
-        command.run_with_runner("make test")
-    except subprocess.CalledProcessError:
-        result = False
-
-    xvfb.stop(xvfb_proc, orig_display)
-
-    return result
+    command.run_with_runner("make test")
 
 _checkers['autotools'] = _autotools_checker
